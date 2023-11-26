@@ -24,6 +24,39 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/category": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类模块"
+                ],
+                "summary": "新增分类",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.CreateCategoryRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/employee": {
             "put": {
                 "consumes": [
@@ -312,6 +345,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "reggie_go_api_v1.CreateCategoryRequest": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "顺序",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "类型   1 菜品分类 2 套餐分类",
+                    "type": "string"
+                }
+            }
+        },
         "reggie_go_api_v1.CreateEmployeeRequest": {
             "type": "object",
             "properties": {

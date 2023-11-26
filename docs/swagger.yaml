@@ -1,4 +1,16 @@
 definitions:
+  reggie_go_api_v1.CreateCategoryRequest:
+    properties:
+      name:
+        description: 分类名称
+        type: string
+      sort:
+        description: 顺序
+        type: string
+      type:
+        description: 类型   1 菜品分类 2 套餐分类
+        type: string
+    type: object
   reggie_go_api_v1.CreateEmployeeRequest:
     properties:
       idNumber:
@@ -315,6 +327,27 @@ info:
   title: Nunu Example API
   version: 1.0.0
 paths:
+  /category:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reggie_go_api_v1.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 新增分类
+      tags:
+      - 分类模块
   /employee:
     post:
       consumes:

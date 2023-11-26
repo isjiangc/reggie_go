@@ -22,6 +22,7 @@ func NewHTTPServer(
 	jwt *jwt.JWT,
 	userHandler *handler.UserHandler,
 	employeeHandler *handler.EmployeeHandler,
+	categoryHandler *handler.CategoryHandler,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
 	s := http.NewServer(
@@ -53,6 +54,7 @@ func NewHTTPServer(
 			":)": "Thank you for using nunu!",
 		})
 	})
+	// 员工
 	s.POST("/employee", employeeHandler.Save)
 	s.PUT("/employee", employeeHandler.UpdateEmployee)
 	emp := s.Group("/employee")
@@ -61,9 +63,13 @@ func NewHTTPServer(
 		emp.POST("/logout", employeeHandler.Logout)
 		emp.GET("/page", employeeHandler.GetEmployeeList)
 		emp.GET("/:id", employeeHandler.GetEmployeeById)
-
 	}
+	// 分类
+	s.POST("/category", categoryHandler.CreateCategory)
+	/*cate := s.Group("/category")
+	{
 
+	}*/
 	v1 := s.Group("/v1")
 	{
 		// No route group has permission

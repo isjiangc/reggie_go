@@ -18,4 +18,7 @@ var (
 	ErrEmployeeAccountAlreadyExist = newError(2003, "The employee is already already exist")
 	ErrEmployeeUpdatedFailed       = newError(2004, "update employee failed")
 	ErrEmployeeNotExit             = newError(2005, "The employee is not exist")
+
+	// Category
+	ErrCreateCategoryFailed = newError(3001, "save category failed")
 )
