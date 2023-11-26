@@ -173,3 +173,24 @@ func (h *EmployeeHandler) UpdateEmployee(ctx *gin.Context) {
 	}
 	v1.HandleSuccess(ctx, "员工信息修改成功")
 }
+
+// GetEmployeeById godoc
+// @Summary 通过Id获取员工信息
+// @Schemes
+// @Description
+// @Tags 员工模块
+// @Accept json
+// @Produce json
+// @Param id path string true "员工id"
+// @Success 200 {object} v1.GetEmployeeByPaIdResponse
+// @Router /employee/{id} [get]
+func (h *EmployeeHandler) GetEmployeeById(ctx *gin.Context) {
+	id := ctx.Param("id")
+	Id, _ := strconv.Atoi(id)
+	employeeByIdData, err := h.employeeService.GetEmployeeById(ctx, int64(Id))
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, &employeeByIdData)
+}

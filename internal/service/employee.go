@@ -16,6 +16,7 @@ type EmployeeService interface {
 	CreateEmployee(ctx context.Context, req *CreateEmployeeData) error
 	GetEmployeeByPage(ctx context.Context, req *v1.GetEmployeeByPageRequest) (*v1.GetEmployeeByPageData, error)
 	UpdateEmployee(ctx context.Context, req *v1.UpdateEmployeeRequest) error
+	GetEmployeeById(ctx context.Context, id int64) (*v1.GetEmployeeByIdData, error)
 }
 
 type CreateEmployeeData struct {
@@ -141,4 +142,25 @@ func (e *employeeService) UpdateEmployee(ctx context.Context, req *v1.UpdateEmpl
 		return nil
 	}
 	return nil
+}
+
+func (e *employeeService) GetEmployeeById(ctx context.Context, id int64) (*v1.GetEmployeeByIdData, error) {
+	employee, err := e.employeeRepo.GetEmployeeById(ctx, id)
+	if err != nil {
+		return nil, v1.ErrEmployeeNotExit
+	}
+	return &v1.GetEmployeeByIdData{
+		Id:         employee.Id,
+		Name:       employee.Name,
+		Username:   employee.Username,
+		Password:   employee.Password,
+		Phone:      employee.Phone,
+		Sex:        employee.Sex,
+		IdNumber:   employee.IdNumber,
+		Status:     employee.Status,
+		CreateTime: employee.CreateTime,
+		UpdateTime: employee.UpdateTime,
+		CreateUser: employee.CreateUser,
+		UpdateUser: employee.UpdateUser,
+	}, nil
 }

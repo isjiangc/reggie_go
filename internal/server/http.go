@@ -60,6 +60,7 @@ func NewHTTPServer(
 		emp.POST("/login", employeeHandler.Login)
 		emp.POST("/logout", employeeHandler.Logout)
 		emp.GET("/page", employeeHandler.GetEmployeeList)
+		emp.GET("/:id", employeeHandler.GetEmployeeById)
 
 	}
 
