@@ -2,12 +2,15 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"reggie_go/internal/model"
 )
 
 type EmployeeRepository interface {
 	GetByUsername(ctx context.Context, username string) (*model.Employee, error)
 	CreateEmployee(ctx context.Context, employee *model.Employee) (int64, error)
+	GetEmployeeByPage(ctx context.Context, page int, size int, name string) ([]*model.Employee, error)
+	GetEmployeeCountByUsername(ctx context.Context, name string) (int, error)
 }
 
 func NewEmployeeRepository(r *Repository) EmployeeRepository {
@@ -49,7 +52,6 @@ func (e *employeeRepository) GetByUsername(ctx context.Context, username string)
 
 // CreateEmployee 新增员工
 func (e *employeeRepository) CreateEmployee(ctx context.Context, employee *model.Employee) (int64, error) {
-	//TODO implement me
 	sqlStr := `INSERT INTO employee (name, username, password, phone, sex, id_number, status, create_time, update_time, create_user, update_user)
                 VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`
 	ret, err := e.db2.Exec(sqlStr, employee.Name, employee.Username, employee.Password, employee.Phone,
@@ -63,4 +65,57 @@ func (e *employeeRepository) CreateEmployee(ctx context.Context, employee *model
 		return 0, err
 	}
 	return theId, nil
+}
+
+// GetEmployeeByPage 分页查询员工信息
+func (e *employeeRepository) GetEmployeeByPage(ctx context.Context, page int, size int, name string) ([]*model.Employee, error) {
+	sqlStr := `  
+			SELECT
+				id,
+				name,
+				username,
+				password,
+				phone,
+				sex,
+				id_number,
+				status,
+				create_time,
+				update_time,
+				create_user,
+				update_user
+			FROM
+				employee
+			WHERE
+				1 = 1`
+	if name != "" {
+		sqlStr += fmt.Sprintf(` AND name LIKE '%%%s%%'`, name)
+	}
+	var employee []*model.Employee
+	offset := (page - 1) * size
+	sqlStr += fmt.Sprintf(` ORDER BY update_time DESC Limit %d OFFSET %d`, size, offset)
+	err := e.db2.Select(&employee, sqlStr)
+	if err != nil {
+		return nil, err
+	}
+	return employee, nil
+}
+
+// GetEmployeeCountByUsername 查询总数
+func (e *employeeRepository) GetEmployeeCountByUsername(ctx context.Context, name string) (int, error) {
+	var count int
+	sqlStr := `
+		SELECT
+			COUNT(*)
+		FROM
+			employee
+		WHERE
+			1 = 1`
+	if name != "" {
+		sqlStr += fmt.Sprintf(` AND name LIKE '%%%s%%'`, name)
+	}
+	err := e.db2.Get(&count, sqlStr)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }

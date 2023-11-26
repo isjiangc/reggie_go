@@ -105,6 +105,48 @@
                 }
             }
         },
+        "/employee/page": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "员工模块"
+                ],
+                "summary": "分页查询",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "页数",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "每页数",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "员工姓名",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.GetEmployeeByPageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "consumes": [
@@ -308,6 +350,42 @@
                 }
             }
         },
+        "reggie_go_api_v1.GetEmployeeByPageData": {
+            "type": "object",
+            "properties": {
+                "records": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reggie_go_internal_model.Employee"
+                    }
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "reggie_go_api_v1.GetEmployeeByPageResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "date": {
+                    "$ref": "#/definitions/reggie_go_api_v1.GetEmployeeByPageData"
+                },
+                "map": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
         "reggie_go_api_v1.GetProfileResponse": {
             "type": "object",
             "properties": {
@@ -410,6 +488,59 @@
                     "additionalProperties": true
                 },
                 "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "reggie_go_internal_model.Employee": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "createUser": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "idNumber": {
+                    "description": "身份证号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "sex": {
+                    "description": "性别",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态 0:禁用，1:正常",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "updateUser": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }

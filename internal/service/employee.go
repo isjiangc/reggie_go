@@ -14,6 +14,7 @@ import (
 type EmployeeService interface {
 	Login(ctx context.Context, req *v1.EmployeeLoginRequest) (*v1.EmployeeLoginResponseData, error)
 	CreateEmployee(ctx context.Context, req *CreateEmployeeData) error
+	GetEmployeeByPage(ctx context.Context, req *v1.GetEmployeeByPageRequest) (*v1.GetEmployeeByPageData, error)
 }
 
 type CreateEmployeeData struct {
@@ -93,4 +94,26 @@ func (e *employeeService) Login(ctx context.Context, req *v1.EmployeeLoginReques
 		CreateUser: employee.CreateUser,
 		UpdateUser: employee.UpdateUser,
 	}, nil
+}
+
+func (e *employeeService) GetEmployeeByPage(ctx context.Context, req *v1.GetEmployeeByPageRequest) (*v1.GetEmployeeByPageData, error) {
+	if req.PageNum < 1 || req.PageSize < 1 {
+		return nil, nil
+	}
+	// 查询总数
+	count, err := e.employeeRepo.GetEmployeeCountByUsername(ctx, req.Name)
+	if err != nil {
+		return nil, err
+	}
+	// 分页查询
+	empList, err := e.employeeRepo.GetEmployeeByPage(ctx, req.PageNum, req.PageSize, req.Name)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.GetEmployeeByPageData{
+		Records: empList,
+		Total:   count,
+		Size:    req.PageSize,
+	}, nil
+
 }

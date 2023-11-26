@@ -1,6 +1,9 @@
 package v1
 
-import "time"
+import (
+	"reggie_go/internal/model"
+	"time"
+)
 
 type EmployeeLoginRequest struct {
 	Username string `json:"username"`
@@ -31,4 +34,21 @@ type CreateEmployeeRequest struct {
 	Phone    string `json:"phone"`    //手机号
 	Sex      string `json:"sex"`      //性别
 	IdNumber string `json:"idNumber"` //身份证号
+}
+
+type GetEmployeeByPageRequest struct {
+	PageNum  int
+	PageSize int
+	Name     string
+}
+
+type GetEmployeeByPageData struct {
+	Records []*model.Employee `json:"records"`
+	Total   int               `json:"total"`
+	Size    int               `json:"size"`
+}
+
+type GetEmployeeByPageResponse struct {
+	Response
+	Date GetEmployeeByPageData
 }

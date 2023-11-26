@@ -75,6 +75,30 @@ definitions:
         description: 用户名
         type: string
     type: object
+  reggie_go_api_v1.GetEmployeeByPageData:
+    properties:
+      records:
+        items:
+          $ref: '#/definitions/reggie_go_internal_model.Employee'
+        type: array
+      size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  reggie_go_api_v1.GetEmployeeByPageResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      date:
+        $ref: '#/definitions/reggie_go_api_v1.GetEmployeeByPageData'
+      map:
+        additionalProperties: true
+        type: object
+      msg:
+        type: string
+    type: object
   reggie_go_api_v1.GetProfileResponse:
     properties:
       code:
@@ -147,6 +171,45 @@ definitions:
       msg:
         type: string
     type: object
+  reggie_go_internal_model.Employee:
+    properties:
+      createTime:
+        description: 创建时间
+        type: string
+      createUser:
+        description: 创建人
+        type: integer
+      id:
+        description: 主键
+        type: integer
+      idNumber:
+        description: 身份证号
+        type: string
+      name:
+        description: 姓名
+        type: string
+      password:
+        description: 密码
+        type: string
+      phone:
+        description: 手机号
+        type: string
+      sex:
+        description: 性别
+        type: string
+      status:
+        description: 状态 0:禁用，1:正常
+        type: integer
+      updateTime:
+        description: 更新时间
+        type: string
+      updateUser:
+        description: 修改人
+        type: integer
+      username:
+        description: 用户名
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact:
@@ -215,6 +278,33 @@ paths:
           schema:
             $ref: '#/definitions/reggie_go_api_v1.Response'
       summary: 员工退出
+      tags:
+      - 员工模块
+  /employee/page:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页数
+        in: query
+        name: page
+        type: string
+      - description: 每页数
+        in: query
+        name: size
+        type: string
+      - description: 员工姓名
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.GetEmployeeByPageResponse'
+      summary: 分页查询
       tags:
       - 员工模块
   /login:

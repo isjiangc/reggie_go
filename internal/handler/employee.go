@@ -7,6 +7,7 @@ import (
 	"net/http"
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/service"
+	"strconv"
 )
 
 type EmployeeHandler struct {
@@ -96,4 +97,34 @@ func (h *EmployeeHandler) Save(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, "新增员工成功")
+}
+
+// GetEmployeeList godoc
+// @Summary 分页查询
+// @Schemes
+// @Description
+// @Tags 员工模块
+// @Accept json
+// @Produce json
+// @Param page query string false "页数"
+// @Param size query string false "每页数"
+// @Param name query string false "员工姓名"
+// @Success 200 {object} v1.GetEmployeeByPageResponse
+// @Router /employee/page [get]
+func (h *EmployeeHandler) GetEmployeeList(ctx *gin.Context) {
+	pageNum := ctx.DefaultQuery("page", "1")
+	pageSize := ctx.DefaultQuery("size", "10")
+	name := ctx.Query("name")
+	page, _ := strconv.Atoi(pageNum)
+	size, _ := strconv.Atoi(pageSize)
+	employeeByPage, err := h.employeeService.GetEmployeeByPage(ctx, &v1.GetEmployeeByPageRequest{
+		PageNum:  page,
+		PageSize: size,
+		Name:     name,
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrInternalServerError, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, &employeeByPage)
 }

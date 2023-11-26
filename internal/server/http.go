@@ -54,11 +54,11 @@ func NewHTTPServer(
 		})
 	})
 	s.POST("/employee", employeeHandler.Save)
-
 	emp := s.Group("/employee")
 	{
 		emp.POST("/login", employeeHandler.Login)
 		emp.POST("/logout", employeeHandler.Logout)
+		emp.GET("/page", employeeHandler.GetEmployeeList)
 
 	}
 
