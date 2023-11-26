@@ -16,4 +16,5 @@ var (
 	// ErrEmployeeAccountIsDisabled 账号已禁止使用
 	ErrEmployeeAccountIsDisabled   = newError(2002, "account is disabled")
 	ErrEmployeeAccountAlreadyExist = newError(2003, "The employee is already already exist")
+	ErrEmployeeUpdatedFailed       = newError(2004, "update employee failed")
 )

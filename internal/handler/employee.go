@@ -8,6 +8,7 @@ import (
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/service"
 	"strconv"
+	"time"
 )
 
 type EmployeeHandler struct {
@@ -127,4 +128,48 @@ func (h *EmployeeHandler) GetEmployeeList(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, &employeeByPage)
+}
+
+// UpdateEmployee godoc
+// @Summary 更新员工
+// @Schemes
+// @Description
+// @Tags 员工模块
+// @Accept json
+// @Produce json
+// @Param request body v1.UpdateEmployeeRequest true "params"
+// @Success 200 {object} v1.Response
+// @Router /employee [put]
+func (h *EmployeeHandler) UpdateEmployee(ctx *gin.Context) {
+	req := v1.UpdateEmployeeRequest{}
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+		return
+	}
+	session := sessions.Default(ctx)
+	userID := session.Get("employee")
+	// 防止session丢失导致更新失败。默认使用管理员更新
+	fmt.Println(userID)
+	if userID == nil {
+		userID = int64(1)
+	}
+	err := h.employeeService.UpdateEmployee(ctx, &v1.UpdateEmployeeRequest{
+		Id:         req.Id,
+		Name:       req.Name,
+		Username:   req.Username,
+		Password:   req.Password,
+		Phone:      req.Phone,
+		Sex:        req.Sex,
+		IdNumber:   req.IdNumber,
+		Status:     req.Status,
+		CreateTime: req.CreateTime,
+		UpdateTime: time.Now(),
+		CreateUser: req.CreateUser,
+		UpdateUser: userID.(int64),
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, "员工信息修改成功")
 }

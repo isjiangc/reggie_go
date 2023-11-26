@@ -54,6 +54,7 @@ func NewHTTPServer(
 		})
 	})
 	s.POST("/employee", employeeHandler.Save)
+	s.PUT("/employee", employeeHandler.UpdateEmployee)
 	emp := s.Group("/employee")
 	{
 		emp.POST("/login", employeeHandler.Login)

@@ -18,6 +18,37 @@
     "host": "localhost:8000",
     "paths": {
         "/employee": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "员工模块"
+                ],
+                "summary": "更新员工",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.UpdateEmployeeRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            },
             "post": {
                 "consumes": [
                     "application/json"
@@ -488,6 +519,59 @@
                     "additionalProperties": true
                 },
                 "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "reggie_go_api_v1.UpdateEmployeeRequest": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "createUser": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "idNumber": {
+                    "description": "身份证号",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "姓名",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "密码",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "sex": {
+                    "description": "性别",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "状态 0:禁用，1:正常",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "updateUser": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "username": {
+                    "description": "用户名",
                     "type": "string"
                 }
             }

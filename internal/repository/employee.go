@@ -11,6 +11,7 @@ type EmployeeRepository interface {
 	CreateEmployee(ctx context.Context, employee *model.Employee) (int64, error)
 	GetEmployeeByPage(ctx context.Context, page int, size int, name string) ([]*model.Employee, error)
 	GetEmployeeCountByUsername(ctx context.Context, name string) (int, error)
+	UpdateEmployee(cxt context.Context, employee *model.Employee) (int64, error)
 }
 
 func NewEmployeeRepository(r *Repository) EmployeeRepository {
@@ -118,4 +119,38 @@ func (e *employeeRepository) GetEmployeeCountByUsername(ctx context.Context, nam
 		return 0, err
 	}
 	return count, nil
+}
+
+// UpdateEmployee 根据id更新员工信息
+func (e *employeeRepository) UpdateEmployee(cxt context.Context, employee *model.Employee) (int64, error) {
+	sqlStr := `
+			UPDATE
+				employee
+			SET
+				name = ?,
+				password = ?,
+				phone = ?,
+				sex = ?,
+				id_number = ?,
+				status = ?,
+				create_time = ?,
+				update_time = ?,
+				create_user = ?,
+				update_user = ?
+			WHERE
+				1=1
+				AND id  = ?;
+			`
+	ret, err := e.db2.Exec(sqlStr, employee.Name, employee.Password, employee.Phone, employee.Sex,
+		employee.IdNumber, employee.Status, employee.CreateTime, employee.UpdateTime,
+		employee.CreateUser, employee.UpdateUser, employee.Id)
+	if err != nil {
+		return 0, err
+	}
+	n, err := ret.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+	fmt.Println(n)
+	return n, nil
 }

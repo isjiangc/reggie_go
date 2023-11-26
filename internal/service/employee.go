@@ -15,6 +15,7 @@ type EmployeeService interface {
 	Login(ctx context.Context, req *v1.EmployeeLoginRequest) (*v1.EmployeeLoginResponseData, error)
 	CreateEmployee(ctx context.Context, req *CreateEmployeeData) error
 	GetEmployeeByPage(ctx context.Context, req *v1.GetEmployeeByPageRequest) (*v1.GetEmployeeByPageData, error)
+	UpdateEmployee(ctx context.Context, req *v1.UpdateEmployeeRequest) error
 }
 
 type CreateEmployeeData struct {
@@ -116,4 +117,28 @@ func (e *employeeService) GetEmployeeByPage(ctx context.Context, req *v1.GetEmpl
 		Size:    req.PageSize,
 	}, nil
 
+}
+
+// UpdateEmployee 更新员工信息
+func (e *employeeService) UpdateEmployee(ctx context.Context, req *v1.UpdateEmployeeRequest) error {
+	ret, err := e.employeeRepo.UpdateEmployee(ctx, &model.Employee{
+		Id:         req.Id,
+		Name:       req.Name,
+		Username:   req.Username,
+		Password:   req.Password,
+		Phone:      req.Phone,
+		Sex:        req.Sex,
+		IdNumber:   req.IdNumber,
+		Status:     req.Status,
+		CreateTime: req.CreateTime,
+		UpdateTime: req.UpdateTime,
+		CreateUser: req.CreateUser,
+		UpdateUser: req.UpdateUser,
+	})
+	if err != nil {
+		return v1.ErrEmployeeUpdatedFailed
+	} else if err == nil && ret > 0 {
+		return nil
+	}
+	return nil
 }
