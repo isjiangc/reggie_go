@@ -34,12 +34,12 @@ func NewCategoryHandler(handler *Handler, categoryService service.CategoryServic
 // @Router /category [post]
 func (h *CategoryHandler) CreateCategory(ctx *gin.Context) {
 	req := v1.CreateCategoryRequest{}
-	cateType, _ := strconv.Atoi(req.Type)
-	cateSort, _ := strconv.Atoi(req.Sort)
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
+	cateType, _ := strconv.Atoi(req.Type)
+	cateSort, _ := strconv.Atoi(req.Sort)
 	session := sessions.Default(ctx)
 	userID := session.Get("employee")
 	if userID == nil {
