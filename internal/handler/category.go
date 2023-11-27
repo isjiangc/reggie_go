@@ -87,3 +87,30 @@ func (h *CategoryHandler) GetCategoryList(ctx *gin.Context) {
 	}
 	v1.HandleSuccess(ctx, &categoryPage)
 }
+
+// DeleteCategory godoc
+// @Summary 删除分类
+// @Schemes
+// @Description
+// @Tags 分类模块
+// @Accept json
+// @Produce json
+// @Param id query string false "分类ID"
+// @Success 200 {object} v1.Response
+// @Router /category [delete]
+func (h *CategoryHandler) DeleteCategory(ctx *gin.Context) {
+	Id := ctx.Query("id")
+	if Id == "" {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrDeleteCategoryIdIsNotEmpty, nil)
+		return
+	}
+	id, _ := strconv.Atoi(Id)
+	err := h.categoryService.DeleteCategory(ctx, &v1.DeleteCategoryRequest{
+		Id: int64(id),
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, "删除分类成功")
+}

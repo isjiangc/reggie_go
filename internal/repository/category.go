@@ -6,6 +6,7 @@ import (
 )
 
 type CategoryRepository interface {
+	DeleteCategory(ctx context.Context, id int64) (int64, error)
 	GetCount(ctx context.Context) (int, error)
 	GetByPage(ctx context.Context, page int, size int) ([]*model.Category, error)
 	Save(ctx context.Context, category *model.Category) (int64, error)
@@ -20,6 +21,26 @@ func NewCategoryRepository(repository *Repository) CategoryRepository {
 
 type categoryRepository struct {
 	*Repository
+}
+
+func (c *categoryRepository) DeleteCategory(ctx context.Context, id int64) (int64, error) {
+	delStr := `
+		DELETE
+		FROM
+			category
+		WHERE
+			1 = 1
+			and id = ?;`
+	ret, err := c.db2.Exec(delStr, id)
+	if err != nil {
+		return 0, err
+	}
+	affected, err := ret.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+	return affected, nil
+
 }
 
 func (c *categoryRepository) GetCount(ctx context.Context) (int, error) {

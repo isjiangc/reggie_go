@@ -21,3 +21,7 @@ type GetCategoryPageResponse struct {
 	Response
 	Data GetCategoryPageData
 }
+
+type DeleteCategoryRequest struct {
+	Id int64 `json:"id"`
+}

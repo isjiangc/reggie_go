@@ -11,6 +11,7 @@ import (
 )
 
 type CategoryService interface {
+	DeleteCategory(ctx context.Context, req *v1.DeleteCategoryRequest) error
 	GetCategoryPage(ctx context.Context, req *v1.GetCategoryPageRequest) (*v1.GetCategoryPageData, error)
 	CreateCategory(ctx context.Context, req *CreateCategoryData) error
 }
@@ -34,6 +35,16 @@ func NewCategoryService(service *Service, categoryRepository repository.Category
 type categoryService struct {
 	*Service
 	categoryRepository repository.CategoryRepository
+}
+
+func (c *categoryService) DeleteCategory(ctx context.Context, req *v1.DeleteCategoryRequest) error {
+	ret, err := c.categoryRepository.DeleteCategory(ctx, req.Id)
+	if err != nil {
+		return v1.ErrDeleteCategoryFailed
+	} else if err == nil && ret > 0 {
+		return nil
+	}
+	return nil
 }
 
 func (c *categoryService) GetCategoryPage(ctx context.Context, req *v1.GetCategoryPageRequest) (*v1.GetCategoryPageData, error) {

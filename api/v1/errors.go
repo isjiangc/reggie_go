@@ -20,5 +20,7 @@ var (
 	ErrEmployeeNotExit             = newError(2005, "The employee is not exist")
 
 	// Category
-	ErrCreateCategoryFailed = newError(3001, "save category failed")
+	ErrCreateCategoryFailed       = newError(3001, "save category failed")
+	ErrDeleteCategoryFailed       = newError(3002, "delete category failed")
+	ErrDeleteCategoryIdIsNotEmpty = newError(3003, "delete category id not empty")
 )

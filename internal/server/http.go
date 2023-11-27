@@ -66,6 +66,7 @@ func NewHTTPServer(
 	}
 	// 分类
 	s.POST("/category", categoryHandler.CreateCategory)
+	s.DELETE("/category", categoryHandler.DeleteCategory)
 	cate := s.Group("/category")
 	{
 		cate.GET("/page", categoryHandler.GetCategoryList)

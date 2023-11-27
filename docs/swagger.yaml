@@ -376,6 +376,24 @@ info:
   version: 1.0.0
 paths:
   /category:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 分类ID
+        in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 删除分类
+      tags:
+      - 分类模块
     post:
       consumes:
       - application/json
