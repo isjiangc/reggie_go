@@ -114,3 +114,40 @@ func (h *CategoryHandler) DeleteCategory(ctx *gin.Context) {
 	}
 	v1.HandleSuccess(ctx, "删除分类成功")
 }
+
+// UpdateCategory godoc
+// @Summary 更新分类
+// @Schemes
+// @Description
+// @Tags 分类模块
+// @Accept json
+// @Produce json
+// @Param request body v1.UpdateCategoryRequest true "params"
+// @Success 200 {object} v1.Response
+// @Router /category [put]
+func (h *CategoryHandler) UpdateCategory(ctx *gin.Context) {
+	req := v1.UpdateCategoryRequest{}
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+		return
+	}
+	id, _ := strconv.Atoi(req.Id)
+	session := sessions.Default(ctx)
+	userID := session.Get("employee")
+	if userID == nil {
+		userID = int64(1)
+	}
+	err := h.categoryService.UpdateCategory(ctx, &service.UpdateCategoryData{
+		Id:         int64(id),
+		Name:       req.Name,
+		Sort:       req.Sort,
+		UpdateTime: time.Now(),
+		UpdateUser: userID.(int64),
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, "修改分类信息成功")
+
+}

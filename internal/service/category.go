@@ -11,6 +11,7 @@ import (
 )
 
 type CategoryService interface {
+	UpdateCategory(ctx context.Context, req *UpdateCategoryData) error
 	DeleteCategory(ctx context.Context, req *v1.DeleteCategoryRequest) error
 	GetCategoryPage(ctx context.Context, req *v1.GetCategoryPageRequest) (*v1.GetCategoryPageData, error)
 	CreateCategory(ctx context.Context, req *CreateCategoryData) error
@@ -25,6 +26,15 @@ type CreateCategoryData struct {
 	UpdateUser int64     `json:"updateUser"` //修改人
 }
 
+type UpdateCategoryData struct {
+	Id         int64     `json:"id"`                         //主键
+	Name       string    `json:"name"`                       //分类名称
+	Sort       int       `json:"sort"`                       //顺序
+	UpdateTime time.Time `db:"update_time"json:"updateTime"` //更新时间
+	UpdateUser int64     `db:"update_user"json:"updateUser"` //修改人
+
+}
+
 func NewCategoryService(service *Service, categoryRepository repository.CategoryRepository, dishRepository repository.DishRepository) CategoryService {
 	return &categoryService{
 		Service:            service,
@@ -37,6 +47,14 @@ type categoryService struct {
 	*Service
 	categoryRepository repository.CategoryRepository
 	dishRepository     repository.DishRepository
+}
+
+func (c *categoryService) UpdateCategory(ctx context.Context, req *UpdateCategoryData) error {
+	ret, err := c.categoryRepository.UpdateCategory(ctx, req.Id, req.Name, req.Sort, req.UpdateTime, req.UpdateUser)
+	if err != nil && ret == 0 {
+		return v1.ErrUpdateCategoryFailed
+	}
+	return nil
 }
 
 func (c *categoryService) DeleteCategory(ctx context.Context, req *v1.DeleteCategoryRequest) error {

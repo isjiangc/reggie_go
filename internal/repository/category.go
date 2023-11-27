@@ -3,9 +3,11 @@ package repository
 import (
 	"context"
 	"reggie_go/internal/model"
+	"time"
 )
 
 type CategoryRepository interface {
+	UpdateCategory(ctx context.Context, id int64, name string, sort int, updateTime time.Time, updateUser int64) (int64, error)
 	DeleteCategory(ctx context.Context, id int64) (int64, error)
 	GetCount(ctx context.Context) (int, error)
 	GetByPage(ctx context.Context, page int, size int) ([]*model.Category, error)
@@ -21,6 +23,30 @@ func NewCategoryRepository(repository *Repository) CategoryRepository {
 
 type categoryRepository struct {
 	*Repository
+}
+
+func (c *categoryRepository) UpdateCategory(ctx context.Context, id int64, name string, sort int, updateTime time.Time,
+	updateUser int64) (int64, error) {
+	sqlStr := `
+		UPDATE
+			category
+		SET
+			name = ?,
+			sort = ?,
+			update_time = ?,
+			update_user = ?
+		WHERE
+			1=1
+			AND id = ?;`
+	ret, err := c.db2.Exec(sqlStr, name, sort, updateTime, updateUser, id)
+	if err != nil {
+		return 0, err
+	}
+	affected, err := ret.RowsAffected()
+	if err != nil {
+		return 0, err
+	}
+	return affected, nil
 }
 
 func (c *categoryRepository) DeleteCategory(ctx context.Context, id int64) (int64, error) {

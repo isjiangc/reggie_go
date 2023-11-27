@@ -256,6 +256,18 @@ definitions:
       msg:
         type: string
     type: object
+  reggie_go_api_v1.UpdateCategoryRequest:
+    properties:
+      id:
+        description: 主键
+        type: string
+      name:
+        description: 分类名称
+        type: string
+      sort:
+        description: 顺序
+        type: integer
+    type: object
   reggie_go_api_v1.UpdateEmployeeRequest:
     properties:
       createTime:
@@ -412,6 +424,26 @@ paths:
           schema:
             $ref: '#/definitions/reggie_go_api_v1.Response'
       summary: 新增分类
+      tags:
+      - 分类模块
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reggie_go_api_v1.UpdateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 更新分类
       tags:
       - 分类模块
   /category/page:

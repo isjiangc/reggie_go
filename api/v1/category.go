@@ -25,3 +25,9 @@ type GetCategoryPageResponse struct {
 type DeleteCategoryRequest struct {
 	Id int64 `json:"id"`
 }
+
+type UpdateCategoryRequest struct {
+	Id   string `json:"id"`   //主键
+	Name string `json:"name"` //分类名称
+	Sort int    `json:"sort"` //顺序
+}
