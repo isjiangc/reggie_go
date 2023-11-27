@@ -81,6 +81,9 @@ func (c *categoryService) GetCategoryPage(ctx context.Context, req *v1.GetCatego
 }
 
 func (c *categoryService) CreateCategory(ctx context.Context, req *CreateCategoryData) error {
+	if req.Type != 1 || req.Type != 2 {
+		return v1.ErrCategoryTypeIsIllegal
+	}
 	// 使用name查询是否存在
 	category, err := c.categoryRepository.FirstByName(ctx, req.Name)
 	if err == nil && category != nil {

@@ -24,4 +24,5 @@ var (
 	ErrDeleteCategoryFailed       = newError(3002, "delete category failed")
 	ErrDeleteCategoryIdIsNotEmpty = newError(3003, "delete category id not empty")
 	ErrCategoryHaveSomeDish       = newError(3004, "当前分类下关联了菜品,不能删除")
+	ErrCategoryTypeIsIllegal      = newError(3005, "分类类型不合法")
 )
