@@ -25,19 +25,33 @@ type CreateCategoryData struct {
 	UpdateUser int64     `json:"updateUser"` //修改人
 }
 
-func NewCategoryService(service *Service, categoryRepository repository.CategoryRepository) CategoryService {
+func NewCategoryService(service *Service, categoryRepository repository.CategoryRepository, dishRepository repository.DishRepository) CategoryService {
 	return &categoryService{
 		Service:            service,
 		categoryRepository: categoryRepository,
+		dishRepository:     dishRepository,
 	}
 }
 
 type categoryService struct {
 	*Service
 	categoryRepository repository.CategoryRepository
+	dishRepository     repository.DishRepository
 }
 
 func (c *categoryService) DeleteCategory(ctx context.Context, req *v1.DeleteCategoryRequest) error {
+	// 查询分类下是否关联了菜品
+	count, err2 := c.dishRepository.QueryCountByCategoryId(ctx, req.Id)
+	if err2 != nil {
+		return v1.ErrInternalServerError
+	}
+	if count == nil {
+		return v1.ErrInternalServerError
+	}
+	// 表明已有关联了
+	if count != nil && *count > 0 {
+		return v1.ErrCategoryHaveSomeDish
+	}
 	ret, err := c.categoryRepository.DeleteCategory(ctx, req.Id)
 	if err != nil {
 		return v1.ErrDeleteCategoryFailed

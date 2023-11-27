@@ -39,7 +39,8 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 	employeeService := service.NewEmployeeService(serviceService, employeeRepository)
 	employeeHandler := handler.NewEmployeeHandler(handlerHandler, employeeService)
 	categoryRepository := repository.NewCategoryRepository(repositoryRepository)
-	categoryService := service.NewCategoryService(serviceService, categoryRepository)
+	dishRepository := repository.NewDishRepository(repositoryRepository)
+	categoryService := service.NewCategoryService(serviceService, categoryRepository, dishRepository)
 	categoryHandler := handler.NewCategoryHandler(handlerHandler, categoryService)
 	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler, employeeHandler, categoryHandler)
 	job := server.NewJob(logger)
@@ -50,7 +51,7 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 
 // wire.go:
 
-var repositorySet = wire.NewSet(repository.NewDB, repository.NewRedis, repository.NewSqlxDB, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository, repository.NewEmployeeRepository, repository.NewCategoryRepository)
+var repositorySet = wire.NewSet(repository.NewDB, repository.NewRedis, repository.NewSqlxDB, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository, repository.NewEmployeeRepository, repository.NewCategoryRepository, repository.NewDishRepository)
 
 var serviceSet = wire.NewSet(service.NewService, service.NewUserService, service.NewEmployeeService, service.NewCategoryService)
 
