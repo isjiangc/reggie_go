@@ -66,10 +66,10 @@ func NewHTTPServer(
 	}
 	// 分类
 	s.POST("/category", categoryHandler.CreateCategory)
-	/*cate := s.Group("/category")
+	cate := s.Group("/category")
 	{
-
-	}*/
+		cate.GET("/page", categoryHandler.GetCategoryList)
+	}
 	v1 := s.Group("/v1")
 	{
 		// No route group has permission

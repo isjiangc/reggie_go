@@ -6,6 +6,8 @@ import (
 )
 
 type CategoryRepository interface {
+	GetCount(ctx context.Context) (int, error)
+	GetByPage(ctx context.Context, page int, size int) ([]*model.Category, error)
 	Save(ctx context.Context, category *model.Category) (int64, error)
 	FirstByName(ctx context.Context, name string) (*model.Category, error)
 }
@@ -18,6 +20,48 @@ func NewCategoryRepository(repository *Repository) CategoryRepository {
 
 type categoryRepository struct {
 	*Repository
+}
+
+func (c *categoryRepository) GetCount(ctx context.Context) (int, error) {
+	sqlStr := `
+		SELECT
+			COUNT(*)
+		FROM
+			category
+		WHERE
+			1 = 1`
+	var count int
+	err := c.db2.Get(&count, sqlStr)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
+func (c *categoryRepository) GetByPage(ctx context.Context, page int, size int) ([]*model.Category, error) {
+	selStr := `
+				SELECT
+				id,
+				type,
+				name,
+				sort,
+				create_time,
+				update_time,
+				create_user,
+				update_user
+			FROM
+				category
+			WHERE
+				1 = 1
+			ORDER BY update_time desc LIMIT ? OFFSET ?;`
+	var category []*model.Category
+	offset := (page - 1) * size
+	err := c.db2.Select(&category, selStr, size, offset)
+	if err != nil {
+		return nil, err
+	}
+	return category, err
+
 }
 
 func (c *categoryRepository) Save(ctx context.Context, category *model.Category) (int64, error) {

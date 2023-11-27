@@ -60,3 +60,30 @@ func (h *CategoryHandler) CreateCategory(ctx *gin.Context) {
 	}
 	v1.HandleSuccess(ctx, "新增分类成功")
 }
+
+// GetCategoryList godoc
+// @Summary 分页查询
+// @Schemes
+// @Description
+// @Tags 分类模块
+// @Accept json
+// @Produce json
+// @Param page query string false "页数"
+// @Param size query string false "每页数"
+// @Success 200 {object} v1.GetCategoryPageResponse
+// @Router /category/page [get]
+func (h *CategoryHandler) GetCategoryList(ctx *gin.Context) {
+	pageNum := ctx.DefaultQuery("page", "1")
+	pageSize := ctx.DefaultQuery("size", "10")
+	page, _ := strconv.Atoi(pageNum)
+	size, _ := strconv.Atoi(pageSize)
+	categoryPage, err := h.categoryService.GetCategoryPage(ctx, &v1.GetCategoryPageRequest{
+		PageNum:  page,
+		PageSize: size,
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrInternalServerError, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, &categoryPage)
+}

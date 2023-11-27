@@ -48,7 +48,7 @@ type GetEmployeeByPageData struct {
 }
 type GetEmployeeByPageResponse struct {
 	Response
-	Date GetEmployeeByPageData
+	Data GetEmployeeByPageData
 }
 
 type UpdateEmployeeRequest struct {
@@ -82,5 +82,5 @@ type GetEmployeeByIdData struct {
 }
 type GetEmployeeByPaIdResponse struct {
 	Response
-	Date GetEmployeeByIdData
+	Data GetEmployeeByIdData
 }

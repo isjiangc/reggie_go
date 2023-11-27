@@ -94,7 +94,7 @@ func (e *employeeRepository) GetEmployeeByPage(ctx context.Context, page int, si
 	}
 	var employee []*model.Employee
 	offset := (page - 1) * size
-	sqlStr += fmt.Sprintf(` ORDER BY update_time DESC Limit %d OFFSET %d`, size, offset)
+	sqlStr += fmt.Sprintf(` ORDER BY update_time DESC LIMIT %d OFFSET %d`, size, offset)
 	err := e.db2.Select(&employee, sqlStr)
 	if err != nil {
 		return nil, err

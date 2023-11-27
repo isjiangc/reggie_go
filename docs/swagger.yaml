@@ -87,6 +87,29 @@ definitions:
         description: 用户名
         type: string
     type: object
+  reggie_go_api_v1.GetCategoryPageData:
+    properties:
+      records:
+        items:
+          $ref: '#/definitions/reggie_go_internal_model.Category'
+        type: array
+      size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  reggie_go_api_v1.GetCategoryPageResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/reggie_go_api_v1.GetCategoryPageData'
+      map:
+        additionalProperties: true
+        type: object
+      msg:
+        type: string
+    type: object
   reggie_go_api_v1.GetEmployeeByIdData:
     properties:
       createTime:
@@ -130,8 +153,7 @@ definitions:
     properties:
       code:
         type: integer
-      data: {}
-      date:
+      data:
         $ref: '#/definitions/reggie_go_api_v1.GetEmployeeByIdData'
       map:
         additionalProperties: true
@@ -154,8 +176,7 @@ definitions:
     properties:
       code:
         type: integer
-      data: {}
-      date:
+      data:
         $ref: '#/definitions/reggie_go_api_v1.GetEmployeeByPageData'
       map:
         additionalProperties: true
@@ -274,6 +295,33 @@ definitions:
         description: 用户名
         type: string
     type: object
+  reggie_go_internal_model.Category:
+    properties:
+      createTime:
+        description: 创建时间
+        type: string
+      createUser:
+        description: 创建人
+        type: integer
+      id:
+        description: 主键
+        type: integer
+      name:
+        description: 分类名称
+        type: string
+      sort:
+        description: 顺序
+        type: integer
+      type:
+        description: 类型   1 菜品分类 2 套餐分类
+        type: integer
+      updateTime:
+        description: 更新时间
+        type: string
+      updateUser:
+        description: 修改人
+        type: integer
+    type: object
   reggie_go_internal_model.Employee:
     properties:
       createTime:
@@ -346,6 +394,29 @@ paths:
           schema:
             $ref: '#/definitions/reggie_go_api_v1.Response'
       summary: 新增分类
+      tags:
+      - 分类模块
+  /category/page:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页数
+        in: query
+        name: page
+        type: string
+      - description: 每页数
+        in: query
+        name: size
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.GetCategoryPageResponse'
+      summary: 分页查询
       tags:
       - 分类模块
   /employee:

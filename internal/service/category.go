@@ -11,6 +11,7 @@ import (
 )
 
 type CategoryService interface {
+	GetCategoryPage(ctx context.Context, req *v1.GetCategoryPageRequest) (*v1.GetCategoryPageData, error)
 	CreateCategory(ctx context.Context, req *CreateCategoryData) error
 }
 type CreateCategoryData struct {
@@ -33,6 +34,25 @@ func NewCategoryService(service *Service, categoryRepository repository.Category
 type categoryService struct {
 	*Service
 	categoryRepository repository.CategoryRepository
+}
+
+func (c *categoryService) GetCategoryPage(ctx context.Context, req *v1.GetCategoryPageRequest) (*v1.GetCategoryPageData, error) {
+	if req.PageNum < 1 || req.PageSize < 1 {
+		return nil, nil
+	}
+	count, err := c.categoryRepository.GetCount(ctx)
+	if err != nil {
+		return nil, err
+	}
+	categories, err := c.categoryRepository.GetByPage(ctx, req.PageNum, req.PageSize)
+	if err != nil {
+		return nil, err
+	}
+	return &v1.GetCategoryPageData{
+		Records: categories,
+		Total:   count,
+		Size:    req.PageSize,
+	}, nil
 }
 
 func (c *categoryService) CreateCategory(ctx context.Context, req *CreateCategoryData) error {

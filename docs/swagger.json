@@ -50,6 +50,42 @@
                 }
             }
         },
+        "/category/page": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类模块"
+                ],
+                "summary": "分页查询",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "页数",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "每页数",
+                        "name": "size",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.GetCategoryPageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/employee": {
             "put": {
                 "consumes": [
@@ -462,6 +498,41 @@
                 }
             }
         },
+        "reggie_go_api_v1.GetCategoryPageData": {
+            "type": "object",
+            "properties": {
+                "records": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reggie_go_internal_model.Category"
+                    }
+                },
+                "size": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
+        "reggie_go_api_v1.GetCategoryPageResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/reggie_go_api_v1.GetCategoryPageData"
+                },
+                "map": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
         "reggie_go_api_v1.GetEmployeeByIdData": {
             "type": "object",
             "properties": {
@@ -521,8 +592,7 @@
                 "code": {
                     "type": "integer"
                 },
-                "data": {},
-                "date": {
+                "data": {
                     "$ref": "#/definitions/reggie_go_api_v1.GetEmployeeByIdData"
                 },
                 "map": {
@@ -557,8 +627,7 @@
                 "code": {
                     "type": "integer"
                 },
-                "data": {},
-                "date": {
+                "data": {
                     "$ref": "#/definitions/reggie_go_api_v1.GetEmployeeByPageData"
                 },
                 "map": {
@@ -726,6 +795,43 @@
                 "username": {
                     "description": "用户名",
                     "type": "string"
+                }
+            }
+        },
+        "reggie_go_internal_model.Category": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "createUser": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "分类名称",
+                    "type": "string"
+                },
+                "sort": {
+                    "description": "顺序",
+                    "type": "integer"
+                },
+                "type": {
+                    "description": "类型   1 菜品分类 2 套餐分类",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "updateUser": {
+                    "description": "修改人",
+                    "type": "integer"
                 }
             }
         },
