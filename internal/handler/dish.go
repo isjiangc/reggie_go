@@ -47,14 +47,11 @@ func (h *DishHandler) CreateDishWithFlavor(ctx *gin.Context) {
 	// 设置flavor参数
 	var flavor model.DishFlavor
 	var flavors []model.DishFlavor
-
-	for i := 0; i < len(req.Flavors); i++ {
-		flavor.Name = req.Flavors[i].Name
-		flavor.Value = req.Flavors[i].Value
-		flavor.CreateUser = userID.(int64)
-		flavor.UpdateUser = userID.(int64)
+	for _, v := range req.Flavors {
+		flavor.Name = v.Name
+		flavor.Value = v.Value
+		flavors = append(flavors, flavor)
 	}
-	flavors = append(flavors, flavor)
 	dishId, err := h.dishService.SaveDishWithFlavor(ctx, model.Dish{
 		Name:        req.Name,
 		CategoryId:  int64(categorId),
@@ -63,6 +60,8 @@ func (h *DishHandler) CreateDishWithFlavor(ctx *gin.Context) {
 		Image:       req.Image,
 		Description: req.Description,
 		Status:      req.Status,
+		CreateUser:  userID.(int64),
+		UpdateUser:  userID.(int64),
 	}, flavors)
 	if err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
