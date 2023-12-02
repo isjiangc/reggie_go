@@ -23,6 +23,7 @@ func NewHTTPServer(
 	userHandler *handler.UserHandler,
 	employeeHandler *handler.EmployeeHandler,
 	categoryHandler *handler.CategoryHandler,
+	dishHandler *handler.DishHandler,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
 	s := http.NewServer(
@@ -72,6 +73,9 @@ func NewHTTPServer(
 	{
 		cate.GET("/page", categoryHandler.GetCategoryList)
 	}
+
+	s.POST("/dish", dishHandler.CreateDishWithFlavor)
+
 	v1 := s.Group("/v1")
 	{
 		// No route group has permission

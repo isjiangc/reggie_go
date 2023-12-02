@@ -152,6 +152,39 @@ const docTemplate = `{
                 }
             }
         },
+        "/dish": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜品管理"
+                ],
+                "summary": "新增菜品",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.CreateDishRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/employee": {
             "put": {
                 "consumes": [
@@ -457,6 +490,46 @@ const docTemplate = `{
                 }
             }
         },
+        "reggie_go_api_v1.CreateDishRequest": {
+            "type": "object",
+            "properties": {
+                "categoryId": {
+                    "description": "菜品分类id",
+                    "type": "string"
+                },
+                "code": {
+                    "description": "商品码",
+                    "type": "string"
+                },
+                "description": {
+                    "description": "描述信息",
+                    "type": "string"
+                },
+                "flavors": {
+                    "description": "口味",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reggie_go_api_v1.Flavors"
+                    }
+                },
+                "image": {
+                    "description": "图片",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "菜品名称",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "菜品价格",
+                    "type": "number"
+                },
+                "status": {
+                    "description": "0 停售 1 起售",
+                    "type": "integer"
+                }
+            }
+        },
         "reggie_go_api_v1.CreateEmployeeRequest": {
             "type": "object",
             "properties": {
@@ -560,6 +633,22 @@ const docTemplate = `{
                 },
                 "username": {
                     "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "reggie_go_api_v1.Flavors": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "口味名称",
+                    "type": "string"
+                },
+                "showOption": {
+                    "type": "boolean"
+                },
+                "value": {
+                    "description": "口味数据list",
                     "type": "string"
                 }
             }

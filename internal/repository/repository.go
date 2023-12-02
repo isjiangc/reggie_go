@@ -35,7 +35,14 @@ type Transaction interface {
 	Transaction(ctx context.Context, fn func(ctx context.Context) error) error
 }
 
+type SqlxTransaction interface {
+	SqlxTran(ctx context.Context, fn func(ctx context.Context) error) error
+}
+
 func NewTransaction(r *Repository) Transaction {
+	return r
+}
+func NewSqlxTransaction(r *Repository) SqlxTransaction {
 	return r
 }
 
@@ -60,6 +67,16 @@ func (r *Repository) Transaction(ctx context.Context, fn func(ctx context.Contex
 		ctx = context.WithValue(ctx, ctxTxKey, tx)
 		return fn(ctx)
 	})
+}
+
+func (r *Repository) SqlxTran(ctx context.Context, fn func(ctx context.Context) error) error {
+	tx, err := r.db2.Begin()
+	if err != nil {
+		return err
+	}
+	defer func() { _ = tx.Rollback() }()
+	err = fn(context.WithValue(ctx, ctxTxKey, tx))
+	return tx.Commit()
 }
 
 func NewDB(conf *viper.Viper, l *log.Logger) *gorm.DB {

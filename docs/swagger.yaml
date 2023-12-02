@@ -11,6 +11,35 @@ definitions:
         description: 类型   1 菜品分类 2 套餐分类
         type: string
     type: object
+  reggie_go_api_v1.CreateDishRequest:
+    properties:
+      categoryId:
+        description: 菜品分类id
+        type: string
+      code:
+        description: 商品码
+        type: string
+      description:
+        description: 描述信息
+        type: string
+      flavors:
+        description: 口味
+        items:
+          $ref: '#/definitions/reggie_go_api_v1.Flavors'
+        type: array
+      image:
+        description: 图片
+        type: string
+      name:
+        description: 菜品名称
+        type: string
+      price:
+        description: 菜品价格
+        type: number
+      status:
+        description: 0 停售 1 起售
+        type: integer
+    type: object
   reggie_go_api_v1.CreateEmployeeRequest:
     properties:
       idNumber:
@@ -85,6 +114,17 @@ definitions:
         type: integer
       username:
         description: 用户名
+        type: string
+    type: object
+  reggie_go_api_v1.Flavors:
+    properties:
+      name:
+        description: 口味名称
+        type: string
+      showOption:
+        type: boolean
+      value:
+        description: 口味数据list
         type: string
     type: object
   reggie_go_api_v1.GetCategoryPageData:
@@ -469,6 +509,27 @@ paths:
       summary: 分页查询
       tags:
       - 分类模块
+  /dish:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reggie_go_api_v1.CreateDishRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 新增菜品
+      tags:
+      - 菜品管理
   /employee:
     post:
       consumes:

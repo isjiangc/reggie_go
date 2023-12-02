@@ -8,11 +8,13 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-co-op/gocron v1.28.2
 	github.com/go-redis/redismock/v9 v9.0.3
+	github.com/go-sql-driver/mysql v1.7.0
 	github.com/golang-jwt/jwt/v5 v5.0.0
 	github.com/golang/mock v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/google/wire v0.5.0
 	github.com/jmoiron/sqlx v1.3.5
+	github.com/qustavo/sqlhooks/v2 v2.1.0
 	github.com/redis/go-redis/v9 v9.0.5
 	github.com/sony/sonyflake v1.1.0
 	github.com/spf13/viper v1.16.0
@@ -47,7 +49,6 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.16.0 // indirect
-	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/gorilla/context v1.1.2 // indirect
