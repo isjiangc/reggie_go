@@ -74,3 +74,33 @@ func (h *DishHandler) CreateDishWithFlavor(ctx *gin.Context) {
 	v1.HandleSuccess(ctx, "新增菜品成功")
 
 }
+
+// GetDishList godoc
+// @Summary 分页查询
+// @Schemes
+// @Description
+// @Tags 菜品管理
+// @Accept json
+// @Produce json
+// @Param page query string false "页数"
+// @Param size query string false "每页数"
+// @Param name query string false "菜品名称"
+// @Success 200 {object} v1.GetDishByPageResponse
+// @Router /dish/page [get]
+func (h *DishHandler) GetDishList(ctx *gin.Context) {
+	pageNum := ctx.DefaultQuery("page", "1")
+	pageSize := ctx.DefaultQuery("size", "10")
+	name := ctx.Query("name")
+	page, _ := strconv.Atoi(pageNum)
+	size, _ := strconv.Atoi(pageSize)
+	dishByPage, err := h.dishService.GetDishByPage(ctx, &v1.GetDishByPageRequest{
+		PageNum:  page,
+		PageSize: size,
+		Name:     name,
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrInternalServerError, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, &dishByPage)
+}

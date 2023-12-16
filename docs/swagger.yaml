@@ -150,6 +150,18 @@ definitions:
       msg:
         type: string
     type: object
+  reggie_go_api_v1.GetDishByPageResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/reggie_go_api_v1.GetCategoryPageData'
+      map:
+        additionalProperties: true
+        type: object
+      msg:
+        type: string
+    type: object
   reggie_go_api_v1.GetEmployeeByIdData:
     properties:
       createTime:
@@ -528,6 +540,33 @@ paths:
           schema:
             $ref: '#/definitions/reggie_go_api_v1.Response'
       summary: 新增菜品
+      tags:
+      - 菜品管理
+  /dish/page:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页数
+        in: query
+        name: page
+        type: string
+      - description: 每页数
+        in: query
+        name: size
+        type: string
+      - description: 菜品名称
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.GetDishByPageResponse'
+      summary: 分页查询
       tags:
       - 菜品管理
   /employee:

@@ -75,6 +75,7 @@ func NewHTTPServer(
 	}
 
 	s.POST("/dish", dishHandler.CreateDishWithFlavor)
+	s.GET("/dish/page", dishHandler.GetDishList)
 
 	v1 := s.Group("/v1")
 	{
