@@ -6,6 +6,7 @@ import (
 )
 
 type DishFlavorRepository interface {
+	GetDishFlavorByDishId(ctx context.Context, dishId int64) ([]*model.DishFlavor, error)
 	SaveDishFlavor(ctx context.Context, flavors []*model.DishFlavor) (int64, error)
 }
 
@@ -17,6 +18,31 @@ func NewDishFlavorRepository(repository *Repository) DishFlavorRepository {
 
 type dishflavorRepository struct {
 	*Repository
+}
+
+func (d *dishflavorRepository) GetDishFlavorByDishId(ctx context.Context, dishId int64) ([]*model.DishFlavor, error) {
+	sqlStr := `
+			SELECT
+				id,
+				dish_id,
+				name,
+				value,
+				create_time,
+				update_time,
+				create_user,
+				update_user,
+				is_deleted
+			FROM
+				dish_flavor
+				WHERE 1=1
+				AND is_deleted = 0
+				AND dish_id = ?`
+	var dishFlavor []*model.DishFlavor
+	err := d.db2.Select(&dishFlavor, sqlStr, dishId)
+	if err != nil {
+		return nil, err
+	}
+	return dishFlavor, nil
 }
 
 func (d *dishflavorRepository) SaveDishFlavor(ctx context.Context, flavors []*model.DishFlavor) (int64, error) {

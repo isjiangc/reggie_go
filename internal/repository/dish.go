@@ -8,6 +8,7 @@ import (
 )
 
 type DishRepository interface {
+	GetDishById(ctx context.Context, id int64) (*model.Dish, error)
 	GetDishByPage(ctx context.Context, page int, size int, name string) ([]*DishDto, error)
 	GetDishCountByName(ctx context.Context, name string) (int, error)
 	SaveDishWithFlavor(ctx context.Context, dish model.Dish, flavors []model.DishFlavor) (int64, error)
@@ -40,6 +41,37 @@ type DishDto struct {
 
 type dishRepository struct {
 	*Repository
+}
+
+func (d *dishRepository) GetDishById(ctx context.Context, id int64) (*model.Dish, error) {
+	sqlStr := `
+		SELECT
+			id,
+			name,
+			category_id,
+			price,
+			code,
+			image,
+			description,
+			status,
+			sort,
+			create_time,
+			update_time,
+			create_user,
+			update_user,
+			is_deleted
+		FROM
+			dish
+			WHERE 1=1 
+			AND is_deleted  = 0
+			AND id = ?;`
+	var dish = model.Dish{}
+	err := d.db2.Get(&dish, sqlStr, id)
+	if err != nil {
+		return nil, err
+	}
+	return &dish, nil
+
 }
 
 func (d *dishRepository) GetDishByPage(ctx context.Context, page int, size int, name string) ([]*DishDto, error) {

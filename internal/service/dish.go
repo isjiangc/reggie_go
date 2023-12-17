@@ -9,6 +9,7 @@ import (
 )
 
 type DishService interface {
+	GetDishById(ctx context.Context, req *v1.GetDishByIdRequest) (*v1.GetDishByIdData, error)
 	GetDishByPage(ctx context.Context, req *v1.GetDishByPageRequest) (*v1.GetDishByPageData, error)
 	SaveDishWithFlavor(ctx context.Context, dis model.Dish, flavors []model.DishFlavor) (int64, error)
 }
@@ -32,6 +33,48 @@ type dishService struct {
 	*repository.Repository
 	dishRepository       repository.DishRepository
 	dishFlavorRepository repository.DishFlavorRepository
+}
+
+func (d *dishService) GetDishById(ctx context.Context, req *v1.GetDishByIdRequest) (*v1.GetDishByIdData, error) {
+	dish, err := d.dishRepository.GetDishById(ctx, req.Id)
+	if err != nil {
+		return nil, v1.ErrDishNotExit
+	}
+	dishFlavors, err := d.dishFlavorRepository.GetDishFlavorByDishId(ctx, req.Id)
+	if err != nil {
+		return nil, v1.ErrDishFlavorNotExit
+	}
+	var dishFlavorList []*v1.DishFlavor
+	for _, dishFlavorDto := range dishFlavors {
+		dishFl := &v1.DishFlavor{}
+		dishFl.Id = dishFlavorDto.Id
+		dishFl.DishId = dishFlavorDto.DishId
+		dishFl.Name = dishFlavorDto.Name
+		dishFl.Value = dishFlavorDto.Value
+		dishFl.CreateTime = dishFlavorDto.CreateTime
+		dishFl.UpdateTime = dishFlavorDto.UpdateTime
+		dishFl.CreateUser = dishFlavorDto.CreateUser
+		dishFl.UpdateUser = dishFlavorDto.UpdateUser
+		dishFl.IsDeleted = dishFlavorDto.IsDeleted
+		dishFlavorList = append(dishFlavorList, dishFl)
+	}
+	return &v1.GetDishByIdData{
+		Id:          dish.Id,
+		Name:        dish.Name,
+		CategoryId:  dish.CategoryId,
+		Price:       dish.Price,
+		Code:        dish.Code,
+		Image:       dish.Image,
+		Description: dish.Description,
+		Status:      dish.Status,
+		Sort:        dish.Sort,
+		CreateTime:  dish.CreateTime,
+		UpdateTime:  dish.UpdateTime,
+		CreateUser:  dish.CreateUser,
+		UpdateUser:  dish.UpdateUser,
+		IsDeleted:   dish.IsDeleted,
+		Falavors:    dishFlavorList,
+	}, nil
 }
 
 func (d *dishService) GetDishByPage(ctx context.Context, req *v1.GetDishByPageRequest) (*v1.GetDishByPageData, error) {

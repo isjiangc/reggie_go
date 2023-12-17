@@ -58,6 +58,36 @@ definitions:
         description: 用户名
         type: string
     type: object
+  reggie_go_api_v1.DishFlavor:
+    properties:
+      createTime:
+        description: 创建时间
+        type: string
+      createUser:
+        description: 创建人
+        type: integer
+      dishId:
+        description: 菜品
+        type: integer
+      id:
+        description: 主键
+        type: integer
+      isDeleted:
+        description: 是否删除
+        type: integer
+      name:
+        description: 口味名称
+        type: string
+      updateTime:
+        description: 更新时间
+        type: string
+      updateUser:
+        description: 修改人
+        type: integer
+      value:
+        description: 口味数据list
+        type: string
+    type: object
   reggie_go_api_v1.EmployeeLoginRequest:
     properties:
       password:
@@ -144,6 +174,68 @@ definitions:
         type: integer
       data:
         $ref: '#/definitions/reggie_go_api_v1.GetCategoryPageData'
+      map:
+        additionalProperties: true
+        type: object
+      msg:
+        type: string
+    type: object
+  reggie_go_api_v1.GetDishByIdData:
+    properties:
+      categoryId:
+        description: 菜品分类id
+        type: integer
+      code:
+        description: 商品码
+        type: string
+      createTime:
+        description: 创建时间
+        type: string
+      createUser:
+        description: 创建人
+        type: integer
+      description:
+        description: 描述信息
+        type: string
+      falavors:
+        description: 口味
+        items:
+          $ref: '#/definitions/reggie_go_api_v1.DishFlavor'
+        type: array
+      id:
+        description: 主键
+        type: integer
+      image:
+        description: 图片
+        type: string
+      isDeleted:
+        description: 是否删除
+        type: integer
+      name:
+        description: 菜品名称
+        type: string
+      price:
+        description: 菜品价格
+        type: number
+      sort:
+        description: 顺序
+        type: integer
+      status:
+        description: 0 停售 1 起售
+        type: integer
+      updateTime:
+        description: 更新时间
+        type: string
+      updateUser:
+        description: 修改人
+        type: integer
+    type: object
+  reggie_go_api_v1.GetDishByIdResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/reggie_go_api_v1.GetDishByIdData'
       map:
         additionalProperties: true
         type: object
@@ -540,6 +632,26 @@ paths:
           schema:
             $ref: '#/definitions/reggie_go_api_v1.Response'
       summary: 新增菜品
+      tags:
+      - 菜品管理
+  /dish/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 菜品Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.GetDishByIdResponse'
+      summary: 通过id获取菜品信息
       tags:
       - 菜品管理
   /dish/page:

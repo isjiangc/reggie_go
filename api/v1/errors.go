@@ -26,4 +26,8 @@ var (
 	ErrCategoryHaveSomeDish       = newError(3004, "当前分类下关联了菜品,不能删除")
 	ErrCategoryTypeIsIllegal      = newError(3005, "分类类型不合法")
 	ErrUpdateCategoryFailed       = newError(3006, "更新分类信息失败")
+
+	ErrDishNotExit = newError(4001, "菜品不存在")
+
+	ErrDishFlavorNotExit = newError(5001, "菜品口味不存在")
 )

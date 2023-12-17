@@ -220,6 +220,37 @@
                 }
             }
         },
+        "/dish/{id}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "菜品管理"
+                ],
+                "summary": "通过id获取菜品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "菜品Id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.GetDishByIdResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/employee": {
             "put": {
                 "consumes": [
@@ -590,6 +621,47 @@
                 }
             }
         },
+        "reggie_go_api_v1.DishFlavor": {
+            "type": "object",
+            "properties": {
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "createUser": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "dishId": {
+                    "description": "菜品",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "isDeleted": {
+                    "description": "是否删除",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "口味名称",
+                    "type": "string"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "updateUser": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "value": {
+                    "description": "口味数据list",
+                    "type": "string"
+                }
+            }
+        },
         "reggie_go_api_v1.EmployeeLoginRequest": {
             "type": "object",
             "properties": {
@@ -713,6 +785,92 @@
                 },
                 "data": {
                     "$ref": "#/definitions/reggie_go_api_v1.GetCategoryPageData"
+                },
+                "map": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "reggie_go_api_v1.GetDishByIdData": {
+            "type": "object",
+            "properties": {
+                "categoryId": {
+                    "description": "菜品分类id",
+                    "type": "integer"
+                },
+                "code": {
+                    "description": "商品码",
+                    "type": "string"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "createUser": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "description": {
+                    "description": "描述信息",
+                    "type": "string"
+                },
+                "falavors": {
+                    "description": "口味",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/reggie_go_api_v1.DishFlavor"
+                    }
+                },
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "image": {
+                    "description": "图片",
+                    "type": "string"
+                },
+                "isDeleted": {
+                    "description": "是否删除",
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "菜品名称",
+                    "type": "string"
+                },
+                "price": {
+                    "description": "菜品价格",
+                    "type": "number"
+                },
+                "sort": {
+                    "description": "顺序",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "0 停售 1 起售",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "updateUser": {
+                    "description": "修改人",
+                    "type": "integer"
+                }
+            }
+        },
+        "reggie_go_api_v1.GetDishByIdResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/reggie_go_api_v1.GetDishByIdData"
                 },
                 "map": {
                     "type": "object",

@@ -104,3 +104,27 @@ func (h *DishHandler) GetDishList(ctx *gin.Context) {
 	}
 	v1.HandleSuccess(ctx, &dishByPage)
 }
+
+// GetDishById godoc
+// @Summary 通过id获取菜品信息
+// @Schemes
+// @Description
+// @Tags 菜品管理
+// @Accept json
+// @Produce json
+// @Param id path string true "菜品Id"
+// @Success 200 {object} v1.GetDishByIdResponse
+// @Router /dish/{id} [get]
+func (h *DishHandler) GetDishById(ctx *gin.Context) {
+	id := ctx.Param("id")
+	disId, _ := strconv.Atoi(id)
+	dishByIdData, err := h.dishService.GetDishById(ctx, &v1.GetDishByIdRequest{
+		Id: int64(disId),
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, &dishByIdData)
+
+}
