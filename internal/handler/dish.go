@@ -63,12 +63,12 @@ func (h *DishHandler) CreateDishWithFlavor(ctx *gin.Context) {
 		CreateUser:  userID.(int64),
 		UpdateUser:  userID.(int64),
 	}, flavors)
-	if err != nil {
-		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+	if err != nil || dishId == 0 {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.AddDishIsError, nil)
 		return
 	}
 	if dishId < 0 {
-		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		v1.HandleError(ctx, http.StatusBadRequest, v1.AddDishIsError, nil)
 		return
 	}
 	v1.HandleSuccess(ctx, "新增菜品成功")

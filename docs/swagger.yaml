@@ -348,6 +348,18 @@ definitions:
       userId:
         type: string
     type: object
+  reggie_go_api_v1.GetSetmealByPageResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/reggie_go_api_v1.GetEmployeeByPageData'
+      map:
+        additionalProperties: true
+        type: object
+      msg:
+        type: string
+    type: object
   reggie_go_api_v1.LoginRequest:
     properties:
       email:
@@ -847,6 +859,33 @@ paths:
       summary: 用户注册
       tags:
       - 用户模块
+  /setmeal/page:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 页数
+        in: query
+        name: page
+        type: string
+      - description: 每页数
+        in: query
+        name: size
+        type: string
+      - description: 套餐名称
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.GetSetmealByPageResponse'
+      summary: 分页查询
+      tags:
+      - 套餐模块
   /user:
     get:
       consumes:

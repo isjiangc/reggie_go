@@ -135,7 +135,7 @@ func (d *dishService) SaveDishWithFlavor(ctx context.Context, dis model.Dish, fl
 		UpdateUser:  dis.UpdateUser,
 		IsDeleted:   0,
 	}, flavors)
-	if err != nil {
+	if err != nil && dishId == 0 {
 		d.Service.logger.Error("SaveDishWithFlavor is failed")
 		return 0, err
 	}

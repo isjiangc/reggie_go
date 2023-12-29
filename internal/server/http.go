@@ -24,6 +24,7 @@ func NewHTTPServer(
 	employeeHandler *handler.EmployeeHandler,
 	categoryHandler *handler.CategoryHandler,
 	dishHandler *handler.DishHandler,
+	setmealHandler *handler.SetmealHandler,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
 	s := http.NewServer(
@@ -77,6 +78,11 @@ func NewHTTPServer(
 	s.POST("/dish", dishHandler.CreateDishWithFlavor)
 	s.GET("/dish/page", dishHandler.GetDishList)
 	s.GET("/dish/:id", dishHandler.GetDishById)
+
+	setmeal := s.Group("/setmeal")
+	{
+		setmeal.GET("/page", setmealHandler.GetSetmealList)
+	}
 
 	v1 := s.Group("/v1")
 	{

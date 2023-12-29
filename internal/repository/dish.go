@@ -8,6 +8,7 @@ import (
 )
 
 type DishRepository interface {
+	UpdateDish(ctx context.Context, dish *model.Dish) error
 	GetDishById(ctx context.Context, id int64) (*model.Dish, error)
 	GetDishByPage(ctx context.Context, page int, size int, name string) ([]*DishDto, error)
 	GetDishCountByName(ctx context.Context, name string) (int, error)
@@ -41,6 +42,11 @@ type DishDto struct {
 
 type dishRepository struct {
 	*Repository
+}
+
+func (d *dishRepository) UpdateDish(ctx context.Context, dish *model.Dish) error {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (d *dishRepository) GetDishById(ctx context.Context, id int64) (*model.Dish, error) {

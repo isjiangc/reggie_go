@@ -28,6 +28,7 @@ var (
 	ErrUpdateCategoryFailed       = newError(3006, "更新分类信息失败")
 
 	ErrDishNotExit = newError(4001, "菜品不存在")
+	AddDishIsError = newError(4002, "新增菜品失败")
 
 	ErrDishFlavorNotExit = newError(5001, "菜品口味不存在")
 )

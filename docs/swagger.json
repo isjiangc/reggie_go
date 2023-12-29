@@ -510,6 +510,48 @@
                 }
             }
         },
+        "/setmeal/page": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "套餐模块"
+                ],
+                "summary": "分页查询",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "页数",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "每页数",
+                        "name": "size",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "套餐名称",
+                        "name": "name",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.GetSetmealByPageResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "get": {
                 "security": [
@@ -1031,6 +1073,24 @@
                     "example": "alan"
                 },
                 "userId": {
+                    "type": "string"
+                }
+            }
+        },
+        "reggie_go_api_v1.GetSetmealByPageResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {
+                    "$ref": "#/definitions/reggie_go_api_v1.GetEmployeeByPageData"
+                },
+                "map": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "msg": {
                     "type": "string"
                 }
             }
