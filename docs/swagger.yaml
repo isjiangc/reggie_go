@@ -859,6 +859,25 @@ paths:
       summary: 用户注册
       tags:
       - 用户模块
+  /setmeal:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 套餐ID
+        in: query
+        name: ids
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 删除套餐
+      tags:
+      - 套餐模块
   /setmeal/page:
     get:
       consumes:

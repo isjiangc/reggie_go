@@ -510,6 +510,36 @@
                 }
             }
         },
+        "/setmeal": {
+            "delete": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "套餐模块"
+                ],
+                "summary": "删除套餐",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "套餐ID",
+                        "name": "ids",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/setmeal/page": {
             "get": {
                 "consumes": [

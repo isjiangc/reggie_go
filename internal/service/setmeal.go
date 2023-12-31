@@ -9,6 +9,7 @@ import (
 )
 
 type SetmealService interface {
+	DeleteSetmeal(ctx context.Context, req *v1.DeleteSetmealRequest) error
 	GetSetmealByPage(ctx context.Context, req *v1.GetSetmealByPageRequest) (*v1.GetSetmealByPageData, error)
 }
 
@@ -22,6 +23,24 @@ func NewSetmealService(service *Service, setmealRepo repository.SetmealRepositor
 type setmealService struct {
 	setmealRepo repository.SetmealRepository
 	*Service
+}
+
+func (s *setmealService) DeleteSetmeal(ctx context.Context, req *v1.DeleteSetmealRequest) error {
+	count, err := s.setmealRepo.GetDeleteSetmealStatusCount(ctx, req.Ids)
+	if err != nil {
+		return err
+	}
+	if count > 0 {
+		return v1.ErrSetmealTheSetmealIsSellIng
+	}
+	ret, err := s.setmealRepo.DeleteSetmeal(ctx, req.Ids)
+	if err != nil {
+		return err
+	}
+	if err == nil && ret > 0 {
+		return nil
+	}
+	return nil
 }
 
 func (s *setmealService) GetSetmealByPage(ctx context.Context, req *v1.GetSetmealByPageRequest) (*v1.GetSetmealByPageData, error) {

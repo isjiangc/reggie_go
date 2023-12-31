@@ -79,6 +79,7 @@ func NewHTTPServer(
 	s.GET("/dish/page", dishHandler.GetDishList)
 	s.GET("/dish/:id", dishHandler.GetDishById)
 
+	s.DELETE("/setmeal", setmealHandler.DeleteSetmeal)
 	setmeal := s.Group("/setmeal")
 	{
 		setmeal.GET("/page", setmealHandler.GetSetmealList)

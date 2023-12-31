@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	v1 "reggie_go/api/v1"
@@ -48,4 +49,27 @@ func (s *SetmealHandler) GetSetmealList(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, &setmealByPage)
+}
+
+// DeleteSetmeal godoc
+// @Summary 删除套餐
+// @Schemes
+// @Description
+// @Tags 套餐模块
+// @Accept json
+// @Produce json
+// @Param ids query string false "套餐ID"
+// @Success 200 {object} v1.Response
+// @Router /setmeal [delete]
+func (s *SetmealHandler) DeleteSetmeal(ctx *gin.Context) {
+	arr := ctx.QueryArray("ids")
+	fmt.Println(arr)
+	err := s.setmealService.DeleteSetmeal(ctx, &v1.DeleteSetmealRequest{
+		Ids: arr,
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, "删除套餐成功")
 }

@@ -35,3 +35,7 @@ type GetSetmealByPageResponse struct {
 	Response
 	Data GetEmployeeByPageData
 }
+
+type DeleteSetmealRequest struct {
+	Ids []string `json:"ids"`
+}
