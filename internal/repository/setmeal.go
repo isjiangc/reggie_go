@@ -8,6 +8,7 @@ import (
 )
 
 type SetmealRepository interface {
+	UpdateSellSetmealStatus(ctx context.Context, status int, ids string) (int, error)
 	DeleteSetmeal(ctx context.Context, ids []string) (int, error)
 	GetDeleteSetmealStatusCount(ctx context.Context, ids []string) (int, error)
 	GetSetmealCountByname(ctx context.Context, name string) (int, error)
@@ -16,6 +17,27 @@ type SetmealRepository interface {
 
 type setmealRepository struct {
 	*Repository
+}
+
+// UpdateSellSetmealStatus 启用/停售
+func (s *setmealRepository) UpdateSellSetmealStatus(ctx context.Context, status int, ids string) (int, error) {
+	sqlStr := `
+	UPDATE
+		setmeal
+	SET
+		status = ?
+	WHERE
+		1 = 1
+		AND id = ?`
+	ret, err := s.db2.Exec(sqlStr, status, ids)
+	if err != nil {
+		return -1, err
+	}
+	affected, err := ret.RowsAffected()
+	if err != nil {
+		return -1, err
+	}
+	return int(affected), nil
 }
 
 func (s *setmealRepository) DeleteSetmeal(ctx context.Context, ids []string) (int, error) {

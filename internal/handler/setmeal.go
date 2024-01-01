@@ -73,3 +73,38 @@ func (s *SetmealHandler) DeleteSetmeal(ctx *gin.Context) {
 	}
 	v1.HandleSuccess(ctx, "删除套餐成功")
 }
+
+// UpdateSetmealStatus godoc
+// @Summary 停售/开售
+// @Schemes
+// @Description
+// @Tags 套餐模块
+// @Accept json
+// @Produce json
+// @Param status path string true "状态"
+// @Param ids query string true "套餐Id"
+// @Success 200 {object} v1.Response
+// @Router /setmeal/{status}/ [post]
+func (s *SetmealHandler) UpdateSetmealStatus(ctx *gin.Context) {
+	status := ctx.Param("status")
+	fmt.Println(status)
+	if status != "1" && status != "0" {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrSetmealTheStatusError, nil)
+		return
+	}
+	Status, _ := strconv.Atoi(status)
+	ids := ctx.Query("ids")
+	if ids == "" {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrSetmealTheIdIsError, nil)
+		return
+	}
+	err := s.setmealService.UpdateSetmealStatus(ctx, &v1.UpdateSellSetmealStatusRequest{
+		Status: Status,
+		Ids:    ids,
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, "状态修改成功")
+}

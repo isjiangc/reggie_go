@@ -33,4 +33,6 @@ var (
 	ErrDishFlavorNotExit = newError(5001, "菜品口味不存在")
 
 	ErrSetmealTheSetmealIsSellIng = newError(6001, "套餐正在售卖中,不能删除")
+	ErrSetmealTheStatusError      = newError(6002, "状态不正确")
+	ErrSetmealTheIdIsError        = newError(6003, "套餐id不能为空")
 )

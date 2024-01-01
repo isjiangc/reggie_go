@@ -83,6 +83,7 @@ func NewHTTPServer(
 	setmeal := s.Group("/setmeal")
 	{
 		setmeal.GET("/page", setmealHandler.GetSetmealList)
+		setmeal.POST("/:status/", setmealHandler.UpdateSetmealStatus)
 	}
 
 	v1 := s.Group("/v1")

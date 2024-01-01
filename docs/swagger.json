@@ -582,6 +582,44 @@
                 }
             }
         },
+        "/setmeal/{status}/": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "套餐模块"
+                ],
+                "summary": "停售/开售",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "状态",
+                        "name": "status",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "套餐Id",
+                        "name": "ids",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "get": {
                 "security": [

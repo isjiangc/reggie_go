@@ -878,6 +878,31 @@ paths:
       summary: 删除套餐
       tags:
       - 套餐模块
+  /setmeal/{status}/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 状态
+        in: path
+        name: status
+        required: true
+        type: string
+      - description: 套餐Id
+        in: query
+        name: ids
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 停售/开售
+      tags:
+      - 套餐模块
   /setmeal/page:
     get:
       consumes:

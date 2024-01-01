@@ -39,3 +39,8 @@ type GetSetmealByPageResponse struct {
 type DeleteSetmealRequest struct {
 	Ids []string `json:"ids"`
 }
+
+type UpdateSellSetmealStatusRequest struct {
+	Status int    `json:"status"`
+	Ids    string `json:"ids"`
+}
