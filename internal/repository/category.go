@@ -86,7 +86,7 @@ func (c *categoryRepository) GetCount(ctx context.Context) (int, error) {
 }
 
 func (c *categoryRepository) GetByPage(ctx context.Context, page int, size int) ([]*model.Category, error) {
-	selStr := `
+	sqlStr := `
 				SELECT
 				id,
 				type,
@@ -103,7 +103,7 @@ func (c *categoryRepository) GetByPage(ctx context.Context, page int, size int) 
 			ORDER BY update_time desc LIMIT ? OFFSET ?;`
 	var category []*model.Category
 	offset := (page - 1) * size
-	err := c.db2.Select(&category, selStr, size, offset)
+	err := c.db2.Select(&category, sqlStr, size, offset)
 	if err != nil {
 		return nil, err
 	}

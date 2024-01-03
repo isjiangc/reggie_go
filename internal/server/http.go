@@ -25,6 +25,7 @@ func NewHTTPServer(
 	categoryHandler *handler.CategoryHandler,
 	dishHandler *handler.DishHandler,
 	setmealHandler *handler.SetmealHandler,
+	addressbookHandler *handler.AddressbookHandler,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
 	s := http.NewServer(
@@ -84,6 +85,11 @@ func NewHTTPServer(
 	{
 		setmeal.GET("/page", setmealHandler.GetSetmealList)
 		setmeal.POST("/:status/", setmealHandler.UpdateSetmealStatus)
+	}
+
+	addressBook := s.Group("/addressBook")
+	{
+		addressBook.GET("/list/:id", addressbookHandler.GetAddressbook)
 	}
 
 	v1 := s.Group("/v1")
