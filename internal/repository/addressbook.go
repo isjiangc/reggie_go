@@ -7,8 +7,9 @@ import (
 )
 
 type AddressbookRepository interface {
+	QueryAddressById(ctx context.Context, id int64) (*model.AddressBook, error)
 	UpdataAddressIsDefault(ctx context.Context, userId int64, Id int64, updateTime time.Time, updateUser int64) (int, error)
-	FirstById(ctx context.Context, id int64) ([]model.AddressBook, error)
+	FirstByUserId(ctx context.Context, userId int64) ([]model.AddressBook, error)
 }
 
 func NewAddressbookRepository(repository *Repository) AddressbookRepository {
@@ -19,6 +20,41 @@ func NewAddressbookRepository(repository *Repository) AddressbookRepository {
 
 type addressbookRepository struct {
 	*Repository
+}
+
+func (s *addressbookRepository) QueryAddressById(ctx context.Context, id int64) (*model.AddressBook, error) {
+	sqlStr := `
+	SELECT
+	    id,
+		user_id,
+		consignee,
+		sex,
+		phone,
+		COALESCE(province_code, '') as province_code,
+		COALESCE(province_name, '') as province_name,
+		COALESCE(city_code, '') as city_code,
+		COALESCE(city_name, '') as city_name,
+		COALESCE(district_code, '') as district_code,
+		COALESCE(district_name, '') as district_name,
+		detail,
+		label,
+		is_default,
+		create_time,
+		update_time,
+		create_user,
+		update_user,
+		is_deleted
+	FROM
+	address_book
+	WHERE
+	1 = 1
+	AND id = ?`
+	var addressBook model.AddressBook
+	err := s.db2.Get(&addressBook, sqlStr, id)
+	if err != nil {
+		return nil, err
+	}
+	return &addressBook, nil
 }
 
 func (s *addressbookRepository) UpdataAddressIsDefault(ctx context.Context, userId int64, Id int64, updateTime time.Time, updateUser int64) (int, error) {
@@ -64,7 +100,7 @@ func (s *addressbookRepository) UpdataAddressIsDefault(ctx context.Context, user
 	return int(rowsAffected), nil
 }
 
-func (a *addressbookRepository) FirstById(ctx context.Context, id int64) ([]model.AddressBook, error) {
+func (a *addressbookRepository) FirstByUserId(ctx context.Context, userId int64) ([]model.AddressBook, error) {
 	sqlStr := `
 		SELECT
 			id,
@@ -94,7 +130,7 @@ func (a *addressbookRepository) FirstById(ctx context.Context, id int64) ([]mode
 		ORDER BY 
 			update_time DESC`
 	var addressBooks []model.AddressBook
-	err := a.db2.Select(&addressBooks, sqlStr, id)
+	err := a.db2.Select(&addressBooks, sqlStr, userId)
 	if err != nil {
 		return nil, err
 	}

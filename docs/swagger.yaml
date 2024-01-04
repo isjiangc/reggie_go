@@ -552,6 +552,26 @@ info:
   title: Nunu Example API
   version: 1.0.0
 paths:
+  /addressBook/{id}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 通过Id获取用户地址信息
+      tags:
+      - 地址模块
   /addressBook/default:
     put:
       consumes:
@@ -573,7 +593,7 @@ paths:
       summary: 通过UserId和地址Id设置默认地址
       tags:
       - 地址模块
-  /addressBook/list/{id}:
+  /addressBook/list/{userid}:
     get:
       consumes:
       - application/json
@@ -590,7 +610,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/reggie_go_api_v1.Response'
-      summary: 通过Id获取用户地址信息
+      summary: 通过用户Id获取用户地址信息
       tags:
       - 地址模块
   /category:

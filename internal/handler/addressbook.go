@@ -22,8 +22,8 @@ func NewAddressbookHandler(handler *Handler, addressbookService service.Addressb
 	}
 }
 
-// GetAddressbook godoc
-// @Summary 通过Id获取用户地址信息
+// GetAddressbookByUserId godoc
+// @Summary 通过用户Id获取用户地址信息
 // @Schemes
 // @Description
 // @Tags 地址模块
@@ -31,9 +31,9 @@ func NewAddressbookHandler(handler *Handler, addressbookService service.Addressb
 // @Produce json
 // @Param id path string true "用户Id"
 // @Success 200 {object} v1.Response
-// @Router /addressBook/list/{id} [get]
-func (h *AddressbookHandler) GetAddressbook(ctx *gin.Context) {
-	id := ctx.Param("id")
+// @Router /addressBook/list/{userid} [get]
+func (h *AddressbookHandler) GetAddressbookByUserId(ctx *gin.Context) {
+	id := ctx.Param("userid")
 	Id, _ := strconv.Atoi(id)
 	getAddressBookData, err := h.addressbookService.GetAddressbook(ctx, &v1.GetAddressBookByUserIdRequest{
 		UserId: int64(Id),
@@ -76,4 +76,28 @@ func (h *AddressbookHandler) UpdateAddressIsDefault(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, "设置默认地址成功")
+}
+
+// GetAddressBookById godoc
+// @Summary 通过Id获取用户地址信息
+// @Schemes
+// @Description
+// @Tags 地址模块
+// @Accept json
+// @Produce json
+// @Param id path string true "Id"
+// @Success 200 {object} v1.Response
+// @Router /addressBook/{id} [get]
+func (h *AddressbookHandler) GetAddressBookById(ctx *gin.Context) {
+	id := ctx.Param("id")
+	Id, _ := strconv.Atoi(id)
+	addressbook, err := h.addressbookService.GetAddressById(ctx, &v1.GetAddressBookByIdRequest{
+		Id: int64(Id),
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, addressbook)
+
 }

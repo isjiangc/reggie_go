@@ -11,6 +11,10 @@ type UpdateAddressBookIsDefaultRequest struct {
 	UserId int64 `json:"userId"` //用户id
 }
 
+type GetAddressBookByIdRequest struct {
+	Id int64 `json:"id"` //主键
+}
+
 type AddressBook struct {
 	Id           int64     `json:"id"`           //主键
 	UserId       int64     `json:"userId"`       //用户id

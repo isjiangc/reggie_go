@@ -89,8 +89,10 @@ func NewHTTPServer(
 
 	addressBook := s.Group("/addressBook")
 	{
-		addressBook.GET("/list/:id", addressbookHandler.GetAddressbook)
+		addressBook.GET("/list/:userid", addressbookHandler.GetAddressbookByUserId)
 		addressBook.PUT("/default", addressbookHandler.UpdateAddressIsDefault)
+		addressBook.GET("/:id", addressbookHandler.GetAddressBookById)
+
 	}
 
 	v1 := s.Group("/v1")
