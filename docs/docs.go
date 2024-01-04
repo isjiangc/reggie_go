@@ -24,6 +24,39 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/addressBook/default": {
+            "put": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "地址模块"
+                ],
+                "summary": "通过UserId和地址Id设置默认地址",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.UpdateAddressBookIsDefaultRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/addressBook/list/{id}": {
             "get": {
                 "consumes": [
@@ -1274,6 +1307,19 @@ const docTemplate = `{
                 },
                 "msg": {
                     "type": "string"
+                }
+            }
+        },
+        "reggie_go_api_v1.UpdateAddressBookIsDefaultRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "userId": {
+                    "description": "用户id",
+                    "type": "integer"
                 }
             }
         },

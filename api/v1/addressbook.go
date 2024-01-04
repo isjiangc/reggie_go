@@ -6,12 +6,9 @@ type GetAddressBookByUserIdRequest struct {
 	UserId int64 `json:"userId"` //用户id
 }
 
-type GetAddressBookData struct {
-	AddressList []AddressBook
-}
-type GetAddressBookByUserIdResponse struct {
-	Response
-	Data GetAddressBookData
+type UpdateAddressBookIsDefaultRequest struct {
+	Id     int64 `json:"id"`     //主键
+	UserId int64 `json:"userId"` //用户id
 }
 
 type AddressBook struct {

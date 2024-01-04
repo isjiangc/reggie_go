@@ -3,9 +3,11 @@ package repository
 import (
 	"context"
 	"reggie_go/internal/model"
+	"time"
 )
 
 type AddressbookRepository interface {
+	UpdataAddressIsDefault(ctx context.Context, userId int64, Id int64, updateTime time.Time, updateUser int64) (int, error)
 	FirstById(ctx context.Context, id int64) ([]model.AddressBook, error)
 }
 
@@ -17,6 +19,49 @@ func NewAddressbookRepository(repository *Repository) AddressbookRepository {
 
 type addressbookRepository struct {
 	*Repository
+}
+
+func (s *addressbookRepository) UpdataAddressIsDefault(ctx context.Context, userId int64, Id int64, updateTime time.Time, updateUser int64) (int, error) {
+	tx, err := s.db2.Begin()
+	if err != nil {
+		return -1, err
+	}
+	defer func() { _ = tx.Rollback() }()
+	sqlStr := `
+		UPDATE
+			address_book
+		SET
+			is_default = 0
+		WHERE
+			1 = 1
+			AND user_id = ?`
+	ret, err := s.db2.Exec(sqlStr, userId)
+	if err != nil {
+		return -1, err
+	}
+	affected, err := ret.RowsAffected()
+	if err != nil || affected < 0 {
+		return -1, nil
+	}
+	sqlStr2 := `
+		UPDATE
+			address_book
+		SET
+			is_default = 1,
+			update_time = ?,
+			update_user = ?
+		WHERE
+			1 = 1
+			AND id = ?`
+	ret2, err := s.db2.Exec(sqlStr2, updateTime, updateUser, Id)
+	if err != nil {
+		return -1, err
+	}
+	rowsAffected, err := ret2.RowsAffected()
+	if err != nil {
+		return -1, nil
+	}
+	return int(rowsAffected), nil
 }
 
 func (a *addressbookRepository) FirstById(ctx context.Context, id int64) ([]model.AddressBook, error) {

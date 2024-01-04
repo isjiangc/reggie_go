@@ -412,6 +412,15 @@ definitions:
       msg:
         type: string
     type: object
+  reggie_go_api_v1.UpdateAddressBookIsDefaultRequest:
+    properties:
+      id:
+        description: 主键
+        type: integer
+      userId:
+        description: 用户id
+        type: integer
+    type: object
   reggie_go_api_v1.UpdateCategoryRequest:
     properties:
       id:
@@ -543,6 +552,27 @@ info:
   title: Nunu Example API
   version: 1.0.0
 paths:
+  /addressBook/default:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reggie_go_api_v1.UpdateAddressBookIsDefaultRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 通过UserId和地址Id设置默认地址
+      tags:
+      - 地址模块
   /addressBook/list/{id}:
     get:
       consumes:
