@@ -29,7 +29,7 @@ func NewAddressbookHandler(handler *Handler, addressbookService service.Addressb
 // @Tags 地址模块
 // @Accept json
 // @Produce json
-// @Param id path string true "用户Id"
+// @Param userid path string true "用户Id"
 // @Success 200 {object} v1.Response
 // @Router /addressBook/list/{userid} [get]
 func (h *AddressbookHandler) GetAddressbookByUserId(ctx *gin.Context) {
@@ -140,5 +140,27 @@ func (h *AddressbookHandler) SaveAddressBook(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, "新增地址成功")
+}
 
+// GetDefaultAddressBook godoc
+// @Summary 通过用户Id获取用户默认地址
+// @Schemes
+// @Description
+// @Tags 地址模块
+// @Accept json
+// @Produce json
+// @Param userid path string true "用户Id"
+// @Success 200 {object} v1.Response
+// @Router /addressBook/default/{userid} [get]
+func (h *AddressbookHandler) GetDefaultAddressBook(ctx *gin.Context) {
+	id := ctx.Param("userid")
+	Id, _ := strconv.Atoi(id)
+	getAddressBookData, err := h.addressbookService.GetDefaultAddressBook(ctx, &v1.GetDefaultAddressBookRequest{
+		UserId: int64(Id),
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, &getAddressBookData)
 }

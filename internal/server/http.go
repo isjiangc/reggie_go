@@ -93,6 +93,7 @@ func NewHTTPServer(
 		addressBook.GET("/list/:userid", addressbookHandler.GetAddressbookByUserId)
 		addressBook.PUT("/default", addressbookHandler.UpdateAddressIsDefault)
 		addressBook.GET("/:id", addressbookHandler.GetAddressBookById)
+		addressBook.GET("/default/:userid", addressbookHandler.GetDefaultAddressBook)
 
 	}
 

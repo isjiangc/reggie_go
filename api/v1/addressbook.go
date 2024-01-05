@@ -19,6 +19,11 @@ type SaveAddressBookRequest struct {
 	AddressBook
 }
 
+type GetDefaultAddressBookRequest struct {
+	UserId int64 `json:"userId"` //用户id
+
+}
+
 type AddressBook struct {
 	Id           int64     `json:"id"`           //主键
 	UserId       int64     `json:"userId"`       //用户id

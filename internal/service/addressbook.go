@@ -10,6 +10,7 @@ import (
 )
 
 type AddressbookService interface {
+	GetDefaultAddressBook(ctx context.Context, req *v1.GetDefaultAddressBookRequest) (*[]v1.AddressBook, error)
 	SaveAddressBook(ctx context.Context, req *v1.SaveAddressBookRequest) error
 	GetAddressById(ctx context.Context, req *v1.GetAddressBookByIdRequest) (*v1.AddressBook, error)
 	UpdataAddressIsDefault(ctx context.Context, req *v1.UpdateAddressBookIsDefaultRequest, updateTime time.Time, updateUser int64) error
@@ -26,6 +27,19 @@ func NewAddressbookService(service *Service, addressbookRepository repository.Ad
 type addressbookService struct {
 	*Service
 	addressbookRepository repository.AddressbookRepository
+}
+
+func (a *addressbookService) GetDefaultAddressBook(ctx context.Context, req *v1.GetDefaultAddressBookRequest) (*[]v1.AddressBook, error) {
+	addressBooks, err := a.addressbookRepository.GetDefaultAddressBook(ctx, req.UserId)
+	if err != nil {
+		return nil, err
+	}
+	var addressBookList []v1.AddressBook
+	err = copier.Copy(&addressBookList, addressBooks)
+	if err != nil {
+		return nil, err
+	}
+	return &addressBookList, nil
 }
 
 func (a *addressbookService) SaveAddressBook(ctx context.Context, req *v1.SaveAddressBookRequest) error {

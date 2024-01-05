@@ -674,6 +674,26 @@ paths:
       summary: 通过UserId和地址Id设置默认地址
       tags:
       - 地址模块
+  /addressBook/default/{userid}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户Id
+        in: path
+        name: userid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 通过用户Id获取用户默认地址
+      tags:
+      - 地址模块
   /addressBook/list/{userid}:
     get:
       consumes:
@@ -681,7 +701,7 @@ paths:
       parameters:
       - description: 用户Id
         in: path
-        name: id
+        name: userid
         required: true
         type: string
       produces:

@@ -83,6 +83,37 @@
                 }
             }
         },
+        "/addressBook/default/{userid}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "地址模块"
+                ],
+                "summary": "通过用户Id获取用户默认地址",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户Id",
+                        "name": "userid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/addressBook/list/{userid}": {
             "get": {
                 "consumes": [
@@ -99,7 +130,7 @@
                     {
                         "type": "string",
                         "description": "用户Id",
-                        "name": "id",
+                        "name": "userid",
                         "in": "path",
                         "required": true
                     }

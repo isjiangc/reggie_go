@@ -7,6 +7,7 @@ import (
 )
 
 type AddressbookRepository interface {
+	GetDefaultAddressBook(ctx context.Context, userId int64) ([]model.AddressBook, error)
 	SaveAddressBook(ctx context.Context, addressBook model.AddressBook) (int64, error)
 	QueryAddressById(ctx context.Context, id int64) (*model.AddressBook, error)
 	UpdataAddressIsDefault(ctx context.Context, userId int64, Id int64, updateTime time.Time, updateUser int64) (int, error)
@@ -21,6 +22,44 @@ func NewAddressbookRepository(repository *Repository) AddressbookRepository {
 
 type addressbookRepository struct {
 	*Repository
+}
+
+func (s *addressbookRepository) GetDefaultAddressBook(ctx context.Context, userId int64) ([]model.AddressBook, error) {
+	sqlStr := `
+		SELECT
+			id,
+			user_id,
+			consignee,
+			sex,
+			phone,
+			COALESCE(province_code, '') as province_code,
+	        COALESCE(province_name, '') as province_name,
+	        COALESCE(city_code, '') as city_code,
+			COALESCE(city_name, '') as city_name,
+			COALESCE(district_code, '') as district_code,
+			COALESCE(district_name, '') as district_name,
+			detail,
+			label,
+			is_default,
+			create_time,
+			update_time,
+			create_user,
+			update_user,
+			is_deleted
+		FROM
+			address_book
+		WHERE
+			1 = 1
+			AND is_default = 1
+			AND user_id = ?
+		ORDER BY 
+			update_time DESC`
+	var addressBooks []model.AddressBook
+	err := s.db2.Select(&addressBooks, sqlStr, userId)
+	if err != nil {
+		return nil, err
+	}
+	return addressBooks, nil
 }
 
 func (s *addressbookRepository) SaveAddressBook(ctx context.Context, addressBook model.AddressBook) (int64, error) {
