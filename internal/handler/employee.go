@@ -83,7 +83,10 @@ func (h *EmployeeHandler) Save(ctx *gin.Context) {
 	}
 	session := sessions.Default(ctx)
 	userID := session.Get("employee")
-	fmt.Println(userID)
+	// 防止session丢失导致更新失败。默认使用管理员更新
+	if userID == nil {
+		userID = int64(1)
+	}
 	err := h.employeeService.CreateEmployee(ctx, &service.CreateEmployeeData{
 		Name:       req.Name,
 		Username:   req.Username,

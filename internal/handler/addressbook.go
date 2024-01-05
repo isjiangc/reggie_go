@@ -99,5 +99,46 @@ func (h *AddressbookHandler) GetAddressBookById(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, addressbook)
+}
+
+// SaveAddressBook godoc
+// @Summary 新增地址
+// @Schemes
+// @Description
+// @Tags 地址模块
+// @Accept json
+// @Produce json
+// @Param request body v1.SaveAddressBookRequest true "params"
+// @Success 200 {object} v1.Response
+// @Router /addressBook [post]
+func (h *AddressbookHandler) SaveAddressBook(ctx *gin.Context) {
+	req := v1.SaveAddressBookRequest{}
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+		return
+	}
+	session := sessions.Default(ctx)
+	userID := session.Get("employee")
+	// 防止session丢失导致更新失败。默认使用管理员更新
+	if userID == nil {
+		userID = int64(1)
+	}
+	err := h.addressbookService.SaveAddressBook(ctx, &v1.SaveAddressBookRequest{
+		AddressBook: v1.AddressBook{
+			UserId:     req.UserId,
+			Consignee:  req.Consignee,
+			Sex:        req.Sex,
+			Phone:      req.Phone,
+			Detail:     req.Detail,
+			Label:      req.Label,
+			CreateUser: userID.(int64),
+			UpdateUser: userID.(int64),
+		},
+	})
+	if err != nil {
+		v1.HandleError(ctx, http.StatusBadRequest, err, nil)
+		return
+	}
+	v1.HandleSuccess(ctx, "新增地址成功")
 
 }

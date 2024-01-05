@@ -17,6 +17,39 @@
     },
     "host": "localhost:8000",
     "paths": {
+        "/addressBook": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "地址模块"
+                ],
+                "summary": "新增地址",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.SaveAddressBookRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/addressBook/default": {
             "put": {
                 "consumes": [
@@ -1331,6 +1364,87 @@
                 },
                 "msg": {
                     "type": "string"
+                }
+            }
+        },
+        "reggie_go_api_v1.SaveAddressBookRequest": {
+            "type": "object",
+            "properties": {
+                "cityCode": {
+                    "description": "市级区划编号",
+                    "type": "string"
+                },
+                "cityName": {
+                    "description": "市级名称",
+                    "type": "string"
+                },
+                "consignee": {
+                    "description": "收货人",
+                    "type": "string"
+                },
+                "createTime": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "createUser": {
+                    "description": "创建人",
+                    "type": "integer"
+                },
+                "detail": {
+                    "description": "详细地址",
+                    "type": "string"
+                },
+                "districtCode": {
+                    "description": "区级区划编号",
+                    "type": "string"
+                },
+                "districtName": {
+                    "description": "区级名称",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "isDefault": {
+                    "description": "默认 0 否 1是",
+                    "type": "integer"
+                },
+                "isDeleted": {
+                    "description": "是否删除",
+                    "type": "integer"
+                },
+                "label": {
+                    "description": "标签",
+                    "type": "string"
+                },
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
+                },
+                "provinceCode": {
+                    "description": "省级区划编号",
+                    "type": "string"
+                },
+                "provinceName": {
+                    "description": "省级名称",
+                    "type": "string"
+                },
+                "sex": {
+                    "description": "性别 0 女 1 男",
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "updateUser": {
+                    "description": "修改人",
+                    "type": "integer"
+                },
+                "userId": {
+                    "description": "用户id",
+                    "type": "integer"
                 }
             }
         },

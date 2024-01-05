@@ -87,6 +87,7 @@ func NewHTTPServer(
 		setmeal.POST("/:status/", setmealHandler.UpdateSetmealStatus)
 	}
 
+	s.POST("/addressBook", addressbookHandler.SaveAddressBook)
 	addressBook := s.Group("/addressBook")
 	{
 		addressBook.GET("/list/:userid", addressbookHandler.GetAddressbookByUserId)

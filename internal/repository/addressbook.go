@@ -7,6 +7,7 @@ import (
 )
 
 type AddressbookRepository interface {
+	SaveAddressBook(ctx context.Context, addressBook model.AddressBook) (int64, error)
 	QueryAddressById(ctx context.Context, id int64) (*model.AddressBook, error)
 	UpdataAddressIsDefault(ctx context.Context, userId int64, Id int64, updateTime time.Time, updateUser int64) (int, error)
 	FirstByUserId(ctx context.Context, userId int64) ([]model.AddressBook, error)
@@ -20,6 +21,23 @@ func NewAddressbookRepository(repository *Repository) AddressbookRepository {
 
 type addressbookRepository struct {
 	*Repository
+}
+
+func (s *addressbookRepository) SaveAddressBook(ctx context.Context, addressBook model.AddressBook) (int64, error) {
+	sqlStr := `
+	INSERT INTO address_book (user_id, consignee, sex, phone, detail, label, is_default, create_time, update_time,
+                             create_user, update_user, is_deleted) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);`
+	ret, err := s.db2.Exec(sqlStr, addressBook.UserId, addressBook.Consignee, addressBook.Sex, addressBook.Phone, addressBook.Detail,
+		addressBook.Label, addressBook.IsDefault, addressBook.CreateTime, addressBook.UpdateTime, addressBook.CreateUser,
+		addressBook.UpdateUser, addressBook.IsDeleted)
+	if err != nil {
+		return -1, nil
+	}
+	theId, err := ret.LastInsertId()
+	if err != nil {
+		return 0, err
+	}
+	return theId, nil
 }
 
 func (s *addressbookRepository) QueryAddressById(ctx context.Context, id int64) (*model.AddressBook, error) {

@@ -4,11 +4,13 @@ import (
 	"context"
 	"github.com/jinzhu/copier"
 	v1 "reggie_go/api/v1"
+	"reggie_go/internal/model"
 	"reggie_go/internal/repository"
 	"time"
 )
 
 type AddressbookService interface {
+	SaveAddressBook(ctx context.Context, req *v1.SaveAddressBookRequest) error
 	GetAddressById(ctx context.Context, req *v1.GetAddressBookByIdRequest) (*v1.AddressBook, error)
 	UpdataAddressIsDefault(ctx context.Context, req *v1.UpdateAddressBookIsDefaultRequest, updateTime time.Time, updateUser int64) error
 	GetAddressbook(ctx context.Context, req *v1.GetAddressBookByUserIdRequest) (*[]v1.AddressBook, error)
@@ -24,6 +26,27 @@ func NewAddressbookService(service *Service, addressbookRepository repository.Ad
 type addressbookService struct {
 	*Service
 	addressbookRepository repository.AddressbookRepository
+}
+
+func (a *addressbookService) SaveAddressBook(ctx context.Context, req *v1.SaveAddressBookRequest) error {
+	ret, err := a.addressbookRepository.SaveAddressBook(ctx, model.AddressBook{
+		UserId:     req.UserId,
+		Consignee:  req.Consignee,
+		Sex:        req.Sex,
+		Phone:      req.Phone,
+		Detail:     req.Detail,
+		Label:      req.Label,
+		IsDefault:  0,
+		CreateTime: time.Now(),
+		UpdateTime: time.Now(),
+		CreateUser: req.CreateUser,
+		UpdateUser: req.UpdateUser,
+		IsDeleted:  0,
+	})
+	if err != nil || ret < 0 {
+		return err
+	}
+	return nil
 }
 
 func (a *addressbookService) GetAddressById(ctx context.Context, req *v1.GetAddressBookByIdRequest) (*v1.AddressBook, error) {
