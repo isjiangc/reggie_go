@@ -845,6 +845,39 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/sendMsg": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "客户模块"
+                ],
+                "summary": "发送验证码",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.SendMsgRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/reggie_go_api_v1.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -1516,6 +1549,15 @@ const docTemplate = `{
                 "userId": {
                     "description": "用户id",
                     "type": "integer"
+                }
+            }
+        },
+        "reggie_go_api_v1.SendMsgRequest": {
+            "type": "object",
+            "properties": {
+                "phone": {
+                    "description": "手机号",
+                    "type": "string"
                 }
             }
         },

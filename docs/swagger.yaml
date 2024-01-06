@@ -472,6 +472,12 @@ definitions:
         description: 用户id
         type: integer
     type: object
+  reggie_go_api_v1.SendMsgRequest:
+    properties:
+      phone:
+        description: 手机号
+        type: string
+    type: object
   reggie_go_api_v1.UpdateAddressBookIsDefaultRequest:
     properties:
       id:
@@ -1145,6 +1151,27 @@ paths:
           schema:
             $ref: '#/definitions/reggie_go_api_v1.Response'
       summary: 用户登录
+      tags:
+      - 客户模块
+  /users/sendMsg:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reggie_go_api_v1.SendMsgRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 发送验证码
       tags:
       - 客户模块
 securityDefinitions:

@@ -98,6 +98,7 @@ func NewHTTPServer(
 
 	}
 	s.POST("/users/login", usersHandler.UsersLogin)
+	s.POST("/users/sendMsg", usersHandler.SendMsg)
 
 	v1 := s.Group("/v1")
 	{

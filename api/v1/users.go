@@ -4,6 +4,9 @@ type UserLoginRequest struct {
 	Phone string `json:"phone"` // 手机号
 	Code  string `json:"code"`  // 验证码
 }
+type SendMsgRequest struct {
+	Phone string `json:"phone"` // 手机号
+}
 
 type Users struct {
 	Id       int64  `json:"id"`       //主键
