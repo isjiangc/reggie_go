@@ -51,7 +51,10 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 	addressbookRepository := repository.NewAddressbookRepository(repositoryRepository)
 	addressbookService := service.NewAddressbookService(serviceService, addressbookRepository)
 	addressbookHandler := handler.NewAddressbookHandler(handlerHandler, addressbookService)
-	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler, employeeHandler, categoryHandler, dishHandler, setmealHandler, addressbookHandler)
+	usersRepository := repository.NewUsersRepository(repositoryRepository)
+	usersService := service.NewUsersService(serviceService, usersRepository)
+	usersHandler := handler.NewUsersHandler(handlerHandler, usersService)
+	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler, employeeHandler, categoryHandler, dishHandler, setmealHandler, addressbookHandler, usersHandler)
 	job := server.NewJob(logger)
 	appApp := newApp(httpServer, job)
 	return appApp, func() {
@@ -60,11 +63,11 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 
 // wire.go:
 
-var repositorySet = wire.NewSet(repository.NewDB, repository.NewRedis, repository.NewSqlxDB, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository, repository.NewEmployeeRepository, repository.NewCategoryRepository, repository.NewDishRepository, repository.NewDishFlavorRepository, repository.NewSetmealRepository, repository.NewAddressbookRepository, repository.NewSqlxTransaction)
+var repositorySet = wire.NewSet(repository.NewDB, repository.NewRedis, repository.NewSqlxDB, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository, repository.NewEmployeeRepository, repository.NewCategoryRepository, repository.NewDishRepository, repository.NewDishFlavorRepository, repository.NewSetmealRepository, repository.NewAddressbookRepository, repository.NewUsersRepository, repository.NewSqlxTransaction)
 
-var serviceSet = wire.NewSet(service.NewService, service.NewUserService, service.NewEmployeeService, service.NewCategoryService, service.NewDishService, service.NewSetmealService, service.NewAddressbookService)
+var serviceSet = wire.NewSet(service.NewService, service.NewUserService, service.NewEmployeeService, service.NewCategoryService, service.NewDishService, service.NewSetmealService, service.NewAddressbookService, service.NewUsersService)
 
-var handlerSet = wire.NewSet(handler.NewHandler, handler.NewUserHandler, handler.NewEmployeeHandler, handler.NewCategoryHandler, handler.NewDishHandler, handler.NewSetmealHandler, handler.NewAddressbookHandler)
+var handlerSet = wire.NewSet(handler.NewHandler, handler.NewUserHandler, handler.NewEmployeeHandler, handler.NewCategoryHandler, handler.NewDishHandler, handler.NewSetmealHandler, handler.NewAddressbookHandler, handler.NewUsersHandler)
 
 var serverSet = wire.NewSet(server.NewHTTPServer, server.NewJob, server.NewTask)
 

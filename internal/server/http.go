@@ -26,6 +26,7 @@ func NewHTTPServer(
 	dishHandler *handler.DishHandler,
 	setmealHandler *handler.SetmealHandler,
 	addressbookHandler *handler.AddressbookHandler,
+	usersHandler *handler.UsersHandler,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
 	s := http.NewServer(
@@ -96,6 +97,7 @@ func NewHTTPServer(
 		addressBook.GET("/default/:userid", addressbookHandler.GetDefaultAddressBook)
 
 	}
+	s.POST("/users/login", usersHandler.UsersLogin)
 
 	v1 := s.Group("/v1")
 	{

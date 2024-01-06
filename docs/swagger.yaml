@@ -532,6 +532,15 @@ definitions:
         description: 用户名
         type: string
     type: object
+  reggie_go_api_v1.UserLoginRequest:
+    properties:
+      code:
+        description: 验证码
+        type: string
+      phone:
+        description: 手机号
+        type: string
+    type: object
   reggie_go_internal_model.Category:
     properties:
       createTime:
@@ -1117,6 +1126,27 @@ paths:
       summary: 获取用户信息
       tags:
       - 用户模块
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/reggie_go_api_v1.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/reggie_go_api_v1.Response'
+      summary: 用户登录
+      tags:
+      - 客户模块
 securityDefinitions:
   Bearer:
     in: header

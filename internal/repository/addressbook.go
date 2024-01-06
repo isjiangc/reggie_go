@@ -74,7 +74,7 @@ func (s *addressbookRepository) SaveAddressBook(ctx context.Context, addressBook
 	}
 	theId, err := ret.LastInsertId()
 	if err != nil {
-		return 0, err
+		return -1, err
 	}
 	return theId, nil
 }

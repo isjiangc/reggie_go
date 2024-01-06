@@ -30,6 +30,7 @@ var repositorySet = wire.NewSet(
 	repository.NewDishFlavorRepository,
 	repository.NewSetmealRepository,
 	repository.NewAddressbookRepository,
+	repository.NewUsersRepository,
 	repository.NewSqlxTransaction,
 )
 
@@ -41,6 +42,7 @@ var serviceSet = wire.NewSet(
 	service.NewDishService,
 	service.NewSetmealService,
 	service.NewAddressbookService,
+	service.NewUsersService,
 )
 
 var handlerSet = wire.NewSet(
@@ -51,6 +53,7 @@ var handlerSet = wire.NewSet(
 	handler.NewDishHandler,
 	handler.NewSetmealHandler,
 	handler.NewAddressbookHandler,
+	handler.NewUsersHandler,
 )
 var serverSet = wire.NewSet(
 	server.NewHTTPServer,
