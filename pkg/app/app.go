@@ -5,8 +5,9 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"reggie_go/pkg/server"
 	"syscall"
+
+	"reggie_go/pkg/server"
 )
 
 type App struct {

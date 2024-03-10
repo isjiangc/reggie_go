@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	"github.com/jinzhu/copier"
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/repository"
@@ -73,5 +74,4 @@ func (s *setmealService) GetSetmealByPage(ctx context.Context, req *v1.GetSetmea
 		Total:   count,
 		Size:    req.PageSize,
 	}, nil
-
 }

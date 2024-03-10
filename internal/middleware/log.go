@@ -2,13 +2,15 @@ package middleware
 
 import (
 	"bytes"
+	"io"
+	"time"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"io"
+
 	"reggie_go/pkg/helper/md5"
 	"reggie_go/pkg/helper/uuid"
 	"reggie_go/pkg/log"
-	"time"
 )
 
 func RequestLogMiddleware(logger *log.Logger) gin.HandlerFunc {
@@ -28,6 +30,7 @@ func RequestLogMiddleware(logger *log.Logger) gin.HandlerFunc {
 		ctx.Next()
 	}
 }
+
 func ResponseLogMiddleware(logger *log.Logger) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		blw := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}

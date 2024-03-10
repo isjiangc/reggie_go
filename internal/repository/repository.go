@@ -3,6 +3,8 @@ package repository
 import (
 	"context"
 	"fmt"
+	"time"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
@@ -10,7 +12,6 @@ import (
 	"gorm.io/gorm"
 	"moul.io/zapgorm2"
 	"reggie_go/pkg/log"
-	"time"
 )
 
 const ctxTxKey = "TxKey"
@@ -42,6 +43,7 @@ type SqlxTransaction interface {
 func NewTransaction(r *Repository) Transaction {
 	return r
 }
+
 func NewSqlxTransaction(r *Repository) SqlxTransaction {
 	return r
 }
@@ -89,6 +91,7 @@ func NewDB(conf *viper.Viper, l *log.Logger) *gorm.DB {
 	db = db.Debug()
 	return db
 }
+
 func NewRedis(conf *viper.Viper) *redis.Client {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     conf.GetString("data.redis.addr"),

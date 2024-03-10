@@ -2,11 +2,13 @@ package handler
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/service"
-	"strconv"
 )
 
 type SetmealHandler struct {

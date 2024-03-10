@@ -3,13 +3,14 @@ package main
 import (
 	"context"
 	"flag"
+
 	"reggie_go/cmd/migration/wire"
 	"reggie_go/pkg/config"
 	"reggie_go/pkg/log"
 )
 
 func main() {
-	var envConf = flag.String("conf", "config/local.yml", "config path, eg: -conf ./config/local.yml")
+	envConf := flag.String("conf", "config/local.yml", "config path, eg: -conf ./config/local.yml")
 	flag.Parse()
 	conf := config.NewConfig(*envConf)
 

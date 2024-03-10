@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"net/http"
+
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/service"
 	"reggie_go/pkg/helper/rand"

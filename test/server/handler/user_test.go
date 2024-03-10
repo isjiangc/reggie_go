@@ -5,17 +5,17 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"net/http"
+	"net/http/httptest"
+	"os"
+	"testing"
+	"time"
+
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/handler"
 	"reggie_go/internal/middleware"
 	jwt2 "reggie_go/pkg/jwt"
 	"reggie_go/test/mocks/service"
-	"time"
-
-	"net/http"
-	"net/http/httptest"
-	"os"
-	"testing"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
@@ -24,13 +24,14 @@ import (
 	"reggie_go/pkg/log"
 )
 
+var userId = "xxx"
+
 var (
-	userId = "xxx"
+	logger *log.Logger
+	hdl    *handler.Handler
+	jwt    *jwt2.JWT
+	router *gin.Engine
 )
-var logger *log.Logger
-var hdl *handler.Handler
-var jwt *jwt2.JWT
-var router *gin.Engine
 
 func TestMain(m *testing.M) {
 	fmt.Println("begin")
@@ -38,7 +39,7 @@ func TestMain(m *testing.M) {
 	if err != nil {
 		fmt.Println("Setenv error", err)
 	}
-	var envConf = flag.String("conf", "config/local.yml", "config path, eg: -conf ./config/local.yml")
+	envConf := flag.String("conf", "config/local.yml", "config path, eg: -conf ./config/local.yml")
 	flag.Parse()
 	conf := config.NewConfig(*envConf)
 
@@ -52,7 +53,7 @@ func TestMain(m *testing.M) {
 		middleware.CORSMiddleware(),
 		middleware.ResponseLogMiddleware(logger),
 		middleware.RequestLogMiddleware(logger),
-		//middleware.SignMiddleware(log),
+		// middleware.SignMiddleware(log),
 	)
 
 	code := m.Run()
@@ -163,6 +164,7 @@ func performRequest(r http.Handler, method, path string, body *bytes.Buffer) *ht
 	r.ServeHTTP(resp, req)
 	return resp
 }
+
 func genToken(t *testing.T) string {
 	token, err := jwt.GenToken(userId, time.Now().Add(time.Hour*24*90))
 	if err != nil {

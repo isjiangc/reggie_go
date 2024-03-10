@@ -2,10 +2,11 @@ package service
 
 import (
 	"context"
+	"time"
+
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/model"
 	"reggie_go/internal/repository"
-	"time"
 )
 
 type DishService interface {
@@ -19,7 +20,8 @@ type TransactionSqlx interface {
 }
 
 func NewDishService(service *Service, dishRepository repository.DishRepository,
-	dishFlavorRepository repository.DishFlavorRepository, repository *repository.Repository) DishService {
+	dishFlavorRepository repository.DishFlavorRepository, repository *repository.Repository,
+) DishService {
 	return &dishService{
 		Service:              service,
 		dishRepository:       dishRepository,
@@ -112,7 +114,6 @@ func (d *dishService) GetDishByPage(ctx context.Context, req *v1.GetDishByPageRe
 		Total:   count,
 		Size:    req.PageSize,
 	}, nil
-
 }
 
 func (d *dishService) SaveDishWithFlavor(ctx context.Context, dis model.Dish, flavors []model.DishFlavor) (int64, error) {

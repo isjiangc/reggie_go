@@ -6,10 +6,11 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"testing"
+
 	v1 "reggie_go/api/v1"
 	"reggie_go/pkg/jwt"
 	"reggie_go/test/mocks/repository"
-	"testing"
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -35,7 +36,7 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	var envConf = flag.String("conf", "config/local.yml", "config path, eg: -conf ./config/local.yml")
+	envConf := flag.String("conf", "config/local.yml", "config path, eg: -conf ./config/local.yml")
 	flag.Parse()
 	conf := config.NewConfig(*envConf)
 

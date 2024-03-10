@@ -1,13 +1,15 @@
 package handler
 
 import (
+	"net/http"
+	"strconv"
+
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"net/http"
+
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/model"
 	"reggie_go/internal/service"
-	"strconv"
 )
 
 type DishHandler struct {
@@ -72,7 +74,6 @@ func (h *DishHandler) CreateDishWithFlavor(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, "新增菜品成功")
-
 }
 
 // GetDishList godoc
@@ -126,5 +127,4 @@ func (h *DishHandler) GetDishById(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, &dishByIdData)
-
 }

@@ -1,13 +1,15 @@
 package handler
 
 import (
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
 	"net/http"
-	v1 "reggie_go/api/v1"
-	"reggie_go/internal/service"
 	"strconv"
 	"time"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+
+	v1 "reggie_go/api/v1"
+	"reggie_go/internal/service"
 )
 
 type CategoryHandler struct {
@@ -149,5 +151,4 @@ func (h *CategoryHandler) UpdateCategory(ctx *gin.Context) {
 		return
 	}
 	v1.HandleSuccess(ctx, "修改分类信息成功")
-
 }

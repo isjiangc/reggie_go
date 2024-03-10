@@ -2,8 +2,9 @@ package repository
 
 import (
 	"context"
-	"reggie_go/internal/model"
 	"time"
+
+	"reggie_go/internal/model"
 )
 
 type AddressbookRepository interface {

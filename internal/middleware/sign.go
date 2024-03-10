@@ -1,14 +1,16 @@
 package middleware
 
 import (
+	"net/http"
+	"sort"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"net/http"
+
 	v1 "reggie_go/api/v1"
 	"reggie_go/pkg/helper/md5"
 	"reggie_go/pkg/log"
-	"sort"
-	"strings"
 )
 
 func SignMiddleware(logger *log.Logger, conf *viper.Viper) gin.HandlerFunc {

@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+
 	"reggie_go/internal/model"
 )
 
@@ -44,7 +45,7 @@ func (e *employeeRepository) GetByUsername(ctx context.Context, username string)
 				WHERE
 					1 = 1
 					AND username = ?;`
-	var employee = model.Employee{}
+	employee := model.Employee{}
 	err := e.db2.Get(&employee, sqlStr, username)
 	if err != nil {
 		return nil, err

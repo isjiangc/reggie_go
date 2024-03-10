@@ -2,10 +2,11 @@ package server
 
 import (
 	"context"
+	"time"
+
 	"github.com/go-co-op/gocron"
 	"go.uber.org/zap"
 	"reggie_go/pkg/log"
-	"time"
 )
 
 type Task struct {
@@ -18,6 +19,7 @@ func NewTask(log *log.Logger) *Task {
 		log: log,
 	}
 }
+
 func (t *Task) Start(ctx context.Context) error {
 	// eg: crontab task
 	t.scheduler = gocron.NewScheduler(time.UTC)
@@ -39,6 +41,7 @@ func (t *Task) Start(ctx context.Context) error {
 	t.scheduler.StartBlocking()
 	return nil
 }
+
 func (t *Task) Stop(ctx context.Context) error {
 	t.scheduler.Stop()
 	t.log.Info("Task stop...")

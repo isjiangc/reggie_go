@@ -4,11 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
+
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/model"
 	"reggie_go/internal/repository"
 	"reggie_go/pkg/helper/md5"
-	"time"
 )
 
 type EmployeeService interface {
@@ -20,13 +21,13 @@ type EmployeeService interface {
 }
 
 type CreateEmployeeData struct {
-	Name       string `json:"name"`       //姓名
-	Username   string `json:"username"`   //用户名
-	Phone      string `json:"phone"`      //手机号
-	Sex        string `json:"sex"`        //性别
-	IdNumber   string `json:"idNumber"`   //身份证号
-	CreateUser int64  `json:"createUser"` //创建人
-	UpdateUser int64  `json:"updateUser"` //修改人
+	Name       string `json:"name"`       // 姓名
+	Username   string `json:"username"`   // 用户名
+	Phone      string `json:"phone"`      // 手机号
+	Sex        string `json:"sex"`        // 性别
+	IdNumber   string `json:"idNumber"`   // 身份证号
+	CreateUser int64  `json:"createUser"` // 创建人
+	UpdateUser int64  `json:"updateUser"` // 修改人
 }
 
 func NewEmployeeService(service *Service, employeeRepo repository.EmployeeRepository) EmployeeService {
@@ -117,7 +118,6 @@ func (e *employeeService) GetEmployeeByPage(ctx context.Context, req *v1.GetEmpl
 		Total:   count,
 		Size:    req.PageSize,
 	}, nil
-
 }
 
 // UpdateEmployee 更新员工信息

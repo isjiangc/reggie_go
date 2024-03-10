@@ -1,9 +1,11 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"net/http"
+
 	"reggie_go/api/v1"
 	"reggie_go/internal/service"
 )
@@ -22,7 +24,7 @@ func NewUserHandler(handler *Handler, userService service.UserService) *UserHand
 
 // Register godoc
 // @Summary 用户注册
-// @Schemes
+// @Scheme
 // @Description 目前只支持邮箱登录
 // @Tags 用户模块
 // @Accept json

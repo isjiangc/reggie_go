@@ -4,10 +4,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
-	"reggie_go/pkg/log"
 	"time"
+
+	"github.com/gin-gonic/gin"
+
+	"reggie_go/pkg/log"
 )
 
 type Server struct {
@@ -29,11 +31,13 @@ func NewServer(engine *gin.Engine, logger *log.Logger, opts ...Option) *Server {
 	}
 	return s
 }
+
 func WithServerHost(host string) Option {
 	return func(s *Server) {
 		s.host = host
 	}
 }
+
 func WithServerPort(port int) Option {
 	return func(s *Server) {
 		s.port = port
@@ -52,6 +56,7 @@ func (s *Server) Start(ctx context.Context) error {
 
 	return nil
 }
+
 func (s *Server) Stop(ctx context.Context) error {
 	s.logger.Sugar().Info("Shutting down server...")
 

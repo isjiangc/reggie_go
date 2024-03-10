@@ -55,6 +55,7 @@ var handlerSet = wire.NewSet(
 	handler.NewAddressbookHandler,
 	handler.NewUsersHandler,
 )
+
 var serverSet = wire.NewSet(
 	server.NewHTTPServer,
 	server.NewJob,
@@ -70,7 +71,6 @@ func newApp(httpServer *http.Server, job *server.Job) *app.App {
 }
 
 func NewWire(*viper.Viper, *log.Logger) (*app.App, func(), error) {
-
 	panic(wire.Build(
 		repositorySet,
 		serviceSet,

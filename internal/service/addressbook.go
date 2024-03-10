@@ -2,11 +2,12 @@ package service
 
 import (
 	"context"
+	"time"
+
 	"github.com/jinzhu/copier"
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/model"
 	"reggie_go/internal/repository"
-	"time"
 )
 
 type AddressbookService interface {
@@ -68,7 +69,7 @@ func (a *addressbookService) GetAddressById(ctx context.Context, req *v1.GetAddr
 	if err != nil {
 		return nil, err
 	}
-	var v1AddressBook = v1.AddressBook{}
+	v1AddressBook := v1.AddressBook{}
 	err = copier.Copy(&v1AddressBook, addressBook)
 	if err != nil {
 		return nil, err

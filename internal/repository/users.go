@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+
 	"reggie_go/internal/model"
 )
 
@@ -36,7 +37,7 @@ func (u *usersRepository) GetUserByPhone(ctx context.Context, phone string) (*mo
 		WHERE
 			1 = 1
 			AND phone = ?`
-	var user = model.Users{}
+	user := model.Users{}
 	err := u.db2.Get(&user, sqlStr, phone)
 	if err != nil {
 		return nil, err

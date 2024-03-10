@@ -2,13 +2,15 @@ package handler
 
 import (
 	"fmt"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-gonic/gin"
 	"net/http"
-	v1 "reggie_go/api/v1"
-	"reggie_go/internal/service"
 	"strconv"
 	"time"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
+
+	v1 "reggie_go/api/v1"
+	"reggie_go/internal/service"
 )
 
 type EmployeeHandler struct {

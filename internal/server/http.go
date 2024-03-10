@@ -40,7 +40,7 @@ func NewHTTPServer(
 	docs.SwaggerInfo.BasePath = "/"
 	s.GET("/swagger/*any", ginSwagger.WrapHandler(
 		swaggerfiles.Handler,
-		//ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", conf.GetInt("app.http.port"))),
+		// ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", conf.GetInt("app.http.port"))),
 		ginSwagger.DefaultModelsExpandDepth(-1),
 	))
 
@@ -48,7 +48,7 @@ func NewHTTPServer(
 		middleware.CORSMiddleware(),
 		middleware.ResponseLogMiddleware(logger),
 		middleware.RequestLogMiddleware(logger),
-		//middleware.SignMiddleware(log),
+		// middleware.SignMiddleware(log),
 		// 使用session
 		sessions.Sessions("reggie_go", store),
 	)

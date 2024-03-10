@@ -1,9 +1,11 @@
 package middleware
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"net/http"
+
 	"reggie_go/api/v1"
 	"reggie_go/pkg/jwt"
 	"reggie_go/pkg/log"

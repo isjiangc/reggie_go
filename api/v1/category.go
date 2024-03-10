@@ -3,9 +3,9 @@ package v1
 import "reggie_go/internal/model"
 
 type CreateCategoryRequest struct {
-	Name string `json:"name"` //分类名称
-	Type string `json:"type"` //类型   1 菜品分类 2 套餐分类
-	Sort string `json:"sort"` //顺序
+	Name string `json:"name"` // 分类名称
+	Type string `json:"type"` // 类型   1 菜品分类 2 套餐分类
+	Sort string `json:"sort"` // 顺序
 }
 
 type GetCategoryPageRequest struct {
@@ -27,7 +27,7 @@ type DeleteCategoryRequest struct {
 }
 
 type UpdateCategoryRequest struct {
-	Id   string `json:"id"`   //主键
-	Name string `json:"name"` //分类名称
-	Sort int    `json:"sort"` //顺序
+	Id   string `json:"id"`   // 主键
+	Name string `json:"name"` // 分类名称
+	Sort int    `json:"sort"` // 顺序
 }

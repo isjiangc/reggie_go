@@ -2,11 +2,12 @@ package service
 
 import (
 	"context"
+	"time"
+
 	"golang.org/x/crypto/bcrypt"
 	v1 "reggie_go/api/v1"
 	"reggie_go/internal/model"
 	"reggie_go/internal/repository"
-	"time"
 )
 
 type UserService interface {

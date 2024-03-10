@@ -2,8 +2,9 @@ package repository
 
 import (
 	"context"
-	"reggie_go/internal/model"
 	"time"
+
+	"reggie_go/internal/model"
 )
 
 type CategoryRepository interface {
@@ -26,7 +27,8 @@ type categoryRepository struct {
 }
 
 func (c *categoryRepository) UpdateCategory(ctx context.Context, id int64, name string, sort int, updateTime time.Time,
-	updateUser int64) (int64, error) {
+	updateUser int64,
+) (int64, error) {
 	sqlStr := `
 		UPDATE
 			category
@@ -66,7 +68,6 @@ func (c *categoryRepository) DeleteCategory(ctx context.Context, id int64) (int6
 		return 0, err
 	}
 	return affected, nil
-
 }
 
 func (c *categoryRepository) GetCount(ctx context.Context) (int, error) {
@@ -108,7 +109,6 @@ func (c *categoryRepository) GetByPage(ctx context.Context, page int, size int) 
 		return nil, err
 	}
 	return category, err
-
 }
 
 func (c *categoryRepository) Save(ctx context.Context, category *model.Category) (int64, error) {
@@ -142,7 +142,7 @@ func (c *categoryRepository) FirstByName(ctx context.Context, name string) (*mod
 			WHERE
 				1 = 1
 				AND name = ?`
-	var category = model.Category{}
+	category := model.Category{}
 	err := c.db2.Get(&category, sqlStr, name)
 	if err != nil {
 		return nil, err
