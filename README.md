@@ -15,5 +15,5 @@ reggie_go基于Nunu脚手架开发的瑞吉外卖的go语言接口
 
 ## swagger截图
 
-![img.png](https://github.com/isjiangc/reggie_go/blob/master/swagger.jpg)
+![swagger.jpg](https://github.com/isjiangc/reggie_go/blob/master/swagger.jpg)
 
